@@ -1,0 +1,1211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Waypoint Learning Solutions</title>
+  <meta name="description" content="Waypoint Learning Solutions — Designing learning with direction. Strategy, design, scenarios, and LMS/SCORM builds." />
+
+  <style>
+    :root{
+      --bg:#f5f7fb;
+      --surface:#ffffff;
+      --surface2:#f9fbff;
+      --border:rgba(17,24,39,.14);
+      --border2:rgba(17,24,39,.10);
+      --text:rgba(17,24,39,.92);
+      --muted:rgba(17,24,39,.68);
+      --muted2:rgba(17,24,39,.55);
+
+      --accent:#1aa6b7;     /* teal */
+      --accent2:#3b82f6;    /* blue */
+      --shadow:0 18px 50px rgba(17,24,39,.10);
+      --shadow2:0 10px 28px rgba(17,24,39,.08);
+
+      --radius:18px;
+      --max:1100px;
+      --focus:0 0 0 3px rgba(26,166,183,.22);
+    }
+
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      font-size: 16px;
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 10% 10%, rgba(59,130,246,.10), transparent 55%),
+        radial-gradient(850px 600px at 85% 15%, rgba(26,166,183,.12), transparent 55%),
+        radial-gradient(900px 650px at 50% 85%, rgba(17,24,39,.06), transparent 60%),
+        var(--bg);
+      line-height:1.55;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    a:hover{ text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:3px; }
+    .container{ width:min(var(--max), calc(100% - 40px)); margin:0 auto; }
+    section{ padding:64px 0; }
+    .center{ text-align:center; }
+    .section-title{
+      font-size:26px;
+      margin:0 0 10px;
+      letter-spacing:.2px;
+      color:rgba(17,24,39,.92);
+    }
+    .section-sub{
+      margin:0 auto 26px;
+      color:var(--muted);
+      max-width:78ch;
+      font-size:16px;
+    }
+
+    /* Header */
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(245,247,251,.82);
+      border-bottom:1px solid var(--border);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0; gap:14px;
+    }
+    .brand{ display:flex; align-items:center; gap:12px; min-width:240px; }
+    .logo{
+      width:38px; height:38px; border-radius:12px;
+      box-shadow: var(--shadow2);
+      display:block;
+      flex-shrink: 0;
+    }
+    .logo img{
+      width:100%;
+      height:100%;
+      object-fit: contain;
+      display:block;
+      border-radius:12px;
+    }
+    .brand-title{ display:flex; flex-direction:column; line-height:1.1; }
+    .brand-title strong{ font-size:14px; letter-spacing:.2px; }
+    .brand-title span{ font-size:12px; color:var(--muted2); }
+
+    .menu-toggle{
+      display:none;
+      background:none;
+      border:none;
+      cursor:pointer;
+      padding:8px;
+      min-width:44px;
+      min-height:44px;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:4px;
+    }
+    .menu-toggle span{
+      width:22px;
+      height:2px;
+      background:var(--text);
+      border-radius:2px;
+      transition:transform .2s ease, opacity .2s ease;
+    }
+    .menu-toggle[aria-expanded="true"] span:nth-child(1){
+      transform:rotate(45deg) translate(6px, 6px);
+    }
+    .menu-toggle[aria-expanded="true"] span:nth-child(2){
+      opacity:0;
+    }
+    .menu-toggle[aria-expanded="true"] span:nth-child(3){
+      transform:rotate(-45deg) translate(6px, -6px);
+    }
+    nav ul{
+      list-style:none;
+      display:flex; gap:10px;
+      padding:0; margin:0;
+      flex-wrap:wrap; justify-content:flex-end;
+    }
+    nav a{
+      color:var(--muted); font-size:13px;
+      padding:8px 10px; border-radius:10px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+    }
+    nav a:hover{ background:rgba(17,24,39,.06); color:var(--text); text-decoration:none; }
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      padding:12px 14px; border-radius:14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.85);
+      color:var(--text);
+      font-weight:650;
+      cursor:pointer;
+      box-shadow: var(--shadow2);
+      white-space:nowrap;
+      transition: transform .08s ease, background .08s ease, border-color .08s ease;
+      min-height: 44px;
+      min-width: 44px;
+    }
+    .btn:hover{ background: rgba(255,255,255,.98); text-decoration:none; transform: translateY(-1px); }
+    .btn:focus{ outline:none; box-shadow:var(--focus); }
+    .btn.primary{
+      border-color: rgba(26,166,183,.35);
+      background: linear-gradient(135deg, rgba(26,166,183,.12), rgba(59,130,246,.10));
+    }
+
+    /* HERO (banner image background + HTML text) */
+    .hero{
+      padding:0;
+      background: var(--surface);
+      border-bottom: 1px solid rgba(17,24,39,.08);
+    }
+
+    /* If you ever change the image filename, update this URL */
+    .hero-band{
+      width:100%;
+      min-height: 420px;
+      display:grid;
+      align-items:center;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(255,255,255,.75) 0%,
+          rgba(255,255,255,.65) 40%,
+          rgba(255,255,255,.15) 100%
+        ),
+        url("assets/images/hero/hero-banner.jpg");
+      background-size: cover;
+      background-position: center right;
+      background-repeat: no-repeat;
+    }
+
+    .hero-inner{
+      width:min(var(--max), calc(100% - 40px));
+      margin:0 auto;
+      padding: 56px 0;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      align-items:center;
+    }
+
+    .hero-copy{
+      max-width: 680px;
+    }
+
+    .hero-copy h1{
+      margin:0 0 10px;
+      font-size:44px;
+      line-height:1.08;
+      letter-spacing:-.6px;
+    }
+    .hero-copy p{
+      margin:0 0 18px;
+      color:var(--muted);
+      max-width: 60ch;
+      font-size:16px;
+    }
+
+    .hero-cta{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+
+    /* ABOUT (center like screenshot) */
+    .about{
+      background: rgba(255,255,255,.55);
+    }
+    .about .blurb{
+      max-width: 86ch;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size:16px;
+    }
+
+    /* SERVICES (industry tabs + icon row + bullet list) */
+    .services{
+      background: transparent;
+    }
+    .services-shell{
+      margin-top: 18px;
+      border-radius: var(--radius);
+      background: var(--surface);
+      border: 1px solid rgba(17,24,39,.10);
+      box-shadow: var(--shadow);
+      overflow: visible;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    /* industry tabs */
+    .industry-tabs{
+      display:flex;
+      gap: 0;
+      justify-content:center;
+      padding: 18px 16px 12px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; /* Hide scrollbar on desktop */
+    }
+    .industry-tabs::-webkit-scrollbar{ 
+      height: 8px; 
+      display: none; /* Hide scrollbar on desktop */
+    }
+    .industry-tabs::-webkit-scrollbar-thumb{ 
+      background: rgba(17,24,39,.18); 
+      border-radius: 99px; 
+    }
+
+    .itab{
+      flex: 0 0 auto;
+      border: 1px solid rgba(17,24,39,.12);
+      background: rgba(245,247,251,.6);
+      color: var(--muted);
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor:pointer;
+      position: relative;
+      margin: 0 6px;
+      border-radius: 12px;
+      transition: transform .08s ease, background .08s ease, color .08s ease, border-color .08s ease;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+    }
+    .itab:hover{ background: rgba(255,255,255,.9); color: var(--text); transform: translateY(-1px); }
+    .itab:focus{ outline:none; box-shadow: var(--focus); }
+    .itab[aria-selected="true"]{
+      background: linear-gradient(135deg, rgba(26,166,183,.12), rgba(59,130,246,.10));
+      border-color: rgba(26,166,183,.4);
+      color: var(--text);
+      box-shadow: 0 2px 8px rgba(26,166,183,.1);
+    }
+    .itab[aria-selected="true"]::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      transform: translateX(-50%);
+      bottom: -9px;
+      width: 0; 
+      height: 0;
+      border-left: 9px solid transparent;
+      border-right: 9px solid transparent;
+      border-top: 9px solid rgba(26,166,183,.4);
+      filter: drop-shadow(0 2px 2px rgba(17,24,39,.08));
+    }
+
+    .services-content{
+      padding: 26px 18px 20px;
+      overflow: visible;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    .service-cards{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .svc{
+      border: 1px solid rgba(17,24,39,.10);
+      background: rgba(255,255,255,.88);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 12px 26px rgba(17,24,39,.06);
+      display:flex;
+      flex-direction: column;
+      gap: 0;
+      align-items: center;
+      text-align:center;
+      min-height: 190px;
+      transition: transform .10s ease, box-shadow .10s ease, border-color .10s ease;
+    }
+    .svc:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 16px 34px rgba(17,24,39,.09);
+      border-color: rgba(26,166,183,.22);
+    }
+
+    /* Icon styling - larger, bare logos */
+    .svc img, .why-card img{
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      display:block;
+      margin: 0 auto;
+      margin-bottom: 10px;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      image-rendering: auto;
+    }
+
+    .svc strong{
+      display:block;
+      font-size: 14px;
+      margin-top: 0;
+    }
+    .svc span{
+      color: var(--muted2);
+      font-size: 14px;
+      line-height: 1.5;
+      margin-top: 8px;
+    }
+
+    .svc-bullets{
+      margin-top: 18px;
+      display:flex;
+      justify-content:center;
+    }
+    .bullet-box{
+      width: min(720px, 100%);
+      border-top: 1px solid rgba(17,24,39,.08);
+      padding-top: 14px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+    .bullets{
+      margin: 0;
+      padding-left: 0;
+      list-style:none;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 18px;
+      font-size: 15px;
+    }
+    .bullets li{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .check{
+      width: 18px;
+      height: 18px;
+      border-radius: 99px;
+      background: rgba(26,166,183,.16);
+      border: 1px solid rgba(26,166,183,.25);
+      display:grid;
+      place-items:center;
+      flex: 0 0 auto;
+      margin-top: 1px;
+      color: rgba(26,166,183,1);
+      font-weight: 900;
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    /* WHY CHOOSE US (3 feature cards) */
+    .why{
+      background: rgba(255,255,255,.55);
+    }
+    .why-grid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .why-card{
+      border: 1px solid rgba(17,24,39,.10);
+      background: rgba(255,255,255,.88);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow2);
+      padding: 20px;
+      text-align:center;
+      transition: transform .10s ease, box-shadow .10s ease, border-color .10s ease;
+    }
+    .why-card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 16px 34px rgba(17,24,39,.09);
+      border-color: rgba(59,130,246,.18);
+    }
+    .why-card strong{ display:block; margin-bottom: 6px; }
+    .why-card p{ margin:0; color: var(--muted); font-size: 15px; }
+
+    /* CONTACT */
+    .contact{
+      background: transparent;
+    }
+    .contact-shell{
+      width: min(720px, 100%);
+      margin: 18px auto 0;
+      border: 1px solid rgba(17,24,39,.10);
+      background: rgba(255,255,255,.88);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+    .contact-form{ display:grid; gap: 10px; }
+    .form-row{ display:grid; gap: 6px; }
+    label{ font-size: 12px; color: var(--muted2); text-align:left; }
+    input, textarea{
+      width:100%;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(17,24,39,.14);
+      background: rgba(255,255,255,.95);
+      color: var(--text);
+      font-size: 16px;
+      min-height: 44px;
+      box-sizing: border-box;
+    }
+    input:focus, textarea:focus{
+      outline:none;
+      box-shadow: var(--focus);
+      border-color: rgba(26,166,183,.35);
+    }
+    textarea{ min-height: 120px; resize: vertical; }
+
+    .note{ font-size:12px; color: var(--muted2); margin-top: 10px; }
+
+    /* HOW WE WORK */
+    .process{
+      background: transparent;
+    }
+    .process-grid{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .process-step{
+      border: 1px solid rgba(17,24,39,.10);
+      background: rgba(255,255,255,.88);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow2);
+      padding: 20px 18px;
+      text-align:center;
+      transition: transform .10s ease, box-shadow .10s ease, border-color .10s ease;
+      position: relative;
+    }
+    .process-step:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 16px 34px rgba(17,24,39,.09);
+      border-color: rgba(26,166,183,.22);
+    }
+    .process-number{
+      width: 42px;
+      height: 42px;
+      border-radius: 99px;
+      background: linear-gradient(135deg, rgba(26,166,183,.16), rgba(59,130,246,.12));
+      border: 2px solid rgba(26,166,183,.25);
+      display:grid;
+      place-items:center;
+      margin: 0 auto 12px;
+      font-weight: 800;
+      font-size: 18px;
+      color: rgba(26,166,183,1);
+    }
+    .process-step strong{
+      display:block;
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+    .process-step p{
+      margin:0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    /* TESTIMONIALS */
+    .testimonials{
+      background: rgba(255,255,255,.55);
+    }
+    .testimonials-grid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .testimonial-card{
+      border: 1px solid rgba(17,24,39,.10);
+      background: rgba(255,255,255,.88);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow2);
+      padding: 20px 18px;
+      transition: transform .10s ease, box-shadow .10s ease, border-color .10s ease;
+      display:flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .testimonial-card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 16px 34px rgba(17,24,39,.09);
+      border-color: rgba(59,130,246,.18);
+    }
+    .testimonial-text{
+      margin:0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+      flex: 1;
+      font-style: italic;
+    }
+    .testimonial-author{
+      display:flex;
+      flex-direction: column;
+      gap: 2px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(17,24,39,.08);
+    }
+    .testimonial-author strong{
+      font-size: 13px;
+      color: var(--text);
+    }
+    .testimonial-author span{
+      font-size: 12px;
+      color: var(--muted2);
+    }
+
+    /* FORM STATES */
+    .btn:disabled{
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .form-success{
+      color: rgba(26,166,183,1);
+      font-weight: 600;
+    }
+    .form-error{
+      color: rgba(220,38,38,1);
+    }
+
+    footer{
+      border-top: 1px solid var(--border);
+      padding: 22px 0;
+      color: var(--muted2);
+      font-size: 12px;
+      background: rgba(255,255,255,.35);
+    }
+    .footer-row{
+      display:flex; justify-content:space-between; gap:12px;
+      flex-wrap:wrap; align-items:center;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 980px){
+      .hero-copy h1{ font-size: 38px; }
+      .service-cards{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .why-grid{ grid-template-columns: 1fr; }
+      .process-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .testimonials-grid{ grid-template-columns: 1fr; }
+      .bullets{ grid-template-columns: 1fr; }
+      .brand{ min-width: unset; }
+      .hero-band{ background-position: center; }
+      /* Show scrollbar on mobile when needed */
+      .industry-tabs::-webkit-scrollbar{ 
+        display: block; 
+      }
+      .industry-tabs{
+        scrollbar-width: thin;
+      }
+    }
+
+    @media (max-width: 560px){
+      .container{ width: calc(100% - 28px); }
+      section{ padding: 52px 0; }
+      .menu-toggle{
+        display:flex;
+      }
+      nav{
+        position:absolute;
+        top:100%;
+        left:0;
+        right:0;
+        background:rgba(245,247,251,.95);
+        backdrop-filter:blur(10px);
+        border-bottom:1px solid var(--border);
+        padding:12px 20px;
+        display:none;
+        box-shadow:0 4px 12px rgba(17,24,39,.08);
+      }
+      nav[aria-expanded="true"]{
+        display:block;
+      }
+      nav ul{
+        flex-direction:column;
+        gap:4px;
+        width:100%;
+      }
+      nav a{ 
+        padding: 14px 16px; 
+        font-size: 15px;
+        min-height: 44px;
+        width:100%;
+        border-radius:10px;
+      }
+      .btn{ 
+        padding: 14px 18px; 
+        border-radius: 13px;
+        min-height: 44px;
+        font-size: 14px;
+      }
+      .nav{
+        position:relative;
+      }
+
+      .hero-band{
+        min-height: 380px;
+        /* Make text readable on small screens */
+        background:
+          linear-gradient(
+            180deg,
+            rgba(255,255,255,.80) 0%,
+            rgba(255,255,255,.70) 50%,
+            rgba(255,255,255,.40) 100%
+          ),
+          url("assets/images/hero/hero-banner.jpg");
+        background-size: cover;
+        background-position: center;
+      }
+      .hero-inner{ padding: 44px 0; }
+      .hero-copy h1{ font-size: 34px; }
+      .service-cards{ grid-template-columns: 1fr; }
+      .process-grid{ grid-template-columns: 1fr; }
+      .svc img, .why-card img{
+        width: 90px;
+        height: 90px;
+      }
+      /* Better tab wrapping on very small screens */
+      .industry-tabs{
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 12px 8px 0;
+        gap: 6px;
+      }
+      .itab{
+        margin: 0 3px;
+        padding: 12px 16px;
+        font-size: 13px;
+        min-height: 44px;
+      }
+      input, textarea{
+        font-size: 16px; /* Prevents iOS zoom on focus */
+        min-height: 44px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{ transition:none !important; scroll-behavior:auto !important; }
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="container">
+    <div class="nav">
+      <div class="brand">
+        <div class="logo">
+          <img src="assets/images/logos/icon-main-logo.png" alt="Waypoint Learning Solutions logo" width="38" height="38" />
+        </div>
+        <div class="brand-title">
+          <strong>Waypoint Learning Solutions</strong>
+          <span>Designing learning with direction</span>
+        </div>
+      </div>
+
+      <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav id="main-nav" aria-label="Primary" aria-expanded="false">
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#why">Why us</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <a class="btn primary" href="#contact">Get in touch</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero" aria-label="Hero">
+    <div class="hero-band">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <h1>Waypoint Learning Solutions</h1>
+          <p>
+            We combine <strong>learning science with practical design</strong> to create intentional learning experiences that deliver real impact.
+            From strategy to implementation, we help universities, VET providers, schools, associations, and organisations move from content to capability.
+          </p>
+          <div class="hero-cta">
+            <a class="btn primary" href="#contact">Get started</a>
+            <a class="btn" href="#services">View services</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="about">
+    <div class="container center">
+      <h2 class="section-title">About Us</h2>
+      <p class="blurb">
+        Waypoint Learning Solutions partners with organisations and education providers to design learning that’s practical,
+        engaging, and delivery-ready. From program strategy and curriculum design through to multimedia and LMS/SCORM builds,
+        we help you move from “content” to capability.
+      </p>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="services">
+    <div class="container center">
+      <h2 class="section-title">Our Services</h2>
+      <p class="section-sub">Solutions by industry — choose your context to find out more.</p>
+
+      <div class="services-shell" role="region" aria-label="Services by industry">
+        <div class="industry-tabs" role="tablist" aria-label="Industries">
+          <button class="itab" role="tab" id="ind-corporate" aria-controls="panel-industry" aria-selected="true">Corporate</button>
+          <button class="itab" role="tab" id="ind-universities" aria-controls="panel-industry" aria-selected="false">Universities</button>
+          <button class="itab" role="tab" id="ind-vet" aria-controls="panel-industry" aria-selected="false">VET & RTOs</button>
+          <button class="itab" role="tab" id="ind-schools" aria-controls="panel-industry" aria-selected="false">Schools</button>
+          <button class="itab" role="tab" id="ind-associations" aria-controls="panel-industry" aria-selected="false">Associations</button>
+        </div>
+
+        <div id="panel-industry" class="services-content" role="tabpanel" tabindex="0" aria-labelledby="ind-corporate">
+          <div class="service-cards" aria-label="Service categories">
+            <div class="svc">
+              <img src="assets/images/services/icon-learning-strategy.png" alt="Compliance training icon" width="110" height="110" loading="lazy" />
+              <strong>Compliance Training</strong>
+              <span>We design compliance programs that go beyond box-ticking, helping staff understand, apply, and retain critical policies, safety requirements, and regulatory obligations in real workplace contexts.</span>
+            </div>
+
+            <div class="svc">
+              <img src="assets/images/services/icon-instructional-design.png" alt="Instructional design icon" width="110" height="110" loading="lazy" />
+              <strong>Instructional Design</strong>
+              <span>We design structured learning experiences that build capability across roles — from onboarding and leadership to customer service and operational excellence.</span>
+            </div>
+
+            <div class="svc">
+              <img src="assets/images/services/icon-lms-scorm.png" alt="Multimedia development icon" width="110" height="110" loading="lazy" />
+              <strong>Multimedia Development</strong>
+              <span>We create videos, interactive modules, simulations, and visual learning assets that make complex topics engaging, accessible, and memorable.</span>
+            </div>
+
+            <div class="svc">
+              <img src="assets/images/services/icon-mobile-learning.png" alt="Mobile learning solutions icon" width="110" height="110" loading="lazy" />
+              <strong>Mobile Learning Solutions</strong>
+              <span>We design mobile-first learning experiences that support people in the flow of work, across phones, tablets, and desktops.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY CHOOSE US -->
+  <section id="why" class="why">
+    <div class="container center">
+      <h2 class="section-title">Why Choose Us?</h2>
+      <p class="section-sub">A practical, partner-style approach — with strong design thinking and reliable builds.</p>
+
+      <div class="why-grid">
+        <div class="why-card">
+          <img src="assets/images/why/icon-expert-learning-design.png" alt="Expert learning design icon" width="110" height="110" loading="lazy" />
+          <strong>Expert Learning Design</strong>
+          <p>Clear structure, strong alignment, and learning that's built for real people and real contexts.</p>
+        </div>
+        <div class="why-card">
+          <img src="assets/images/why/icon-learning-technology.png" alt="Learning technology icon" width="110" height="110" loading="lazy" />
+          <strong>Build-Ready Delivery</strong>
+          <p>From multimedia to SCORM and LMS builds — implementation quality is part of the service.</p>
+        </div>
+        <div class="why-card">
+          <img src="assets/images/why/icon-client-partnerships.png" alt="Client partnership icon" width="110" height="110" loading="lazy" />
+          <strong>Client-Focused Partnership</strong>
+          <p>We clarify what matters, move fast, and iterate with you to land something you can run with.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HOW WE WORK -->
+  <section id="process" class="process">
+    <div class="container center">
+      <h2 class="section-title">How We Work</h2>
+      <p class="section-sub">A clear, collaborative process from discovery to deployment.</p>
+
+      <div class="process-grid">
+        <div class="process-step">
+          <div class="process-number">1</div>
+          <strong>Discovery & Strategy</strong>
+          <p>We start by understanding your goals, learners, and context. Together, we define clear outcomes and map the learning journey.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-number">2</div>
+          <strong>Design & Development</strong>
+          <p>We create learning blueprints, design activities, and develop content that aligns with your objectives and engages learners.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-number">3</div>
+          <strong>Build & Test</strong>
+          <p>We build your learning solution, package it for your platform, and thoroughly test to ensure everything works as intended.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-number">4</div>
+          <strong>Deploy & Support</strong>
+          <p>We help you launch successfully and provide support to ensure your learning program runs smoothly from day one.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials" class="testimonials">
+    <div class="container center">
+      <h2 class="section-title">What Clients Say</h2>
+      <p class="section-sub">Hear from organisations we've helped transform their learning programs.</p>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <p class="testimonial-text">"Waypoint transformed our online course structure. The learning design was clear, engaging, and our students actually completed the modules. Highly recommend."</p>
+          <div class="testimonial-author">
+            <strong>Dr. Sarah Chen</strong>
+            <span>Academic Director, University</span>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-text">"The scenario-based learning they created for our leadership program was exactly what we needed. It's practical, relevant, and our managers are using it in real situations."</p>
+          <div class="testimonial-author">
+            <strong>Michael Torres</strong>
+            <span>Learning & Development Manager, Corporate</span>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-text">"From assessment redesign to SCORM packaging, Waypoint delivered everything we needed. The quality was excellent and the process was smooth."</p>
+          <div class="testimonial-author">
+            <strong>Jennifer Park</strong>
+            <span>Training Manager, RTO</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact">
+    <div class="container center">
+      <h2 class="section-title">Get In Touch</h2>
+      <p class="section-sub">Ready to move learning forward? Send a note and we'll respond within 24 hours with a clear next step.</p>
+
+      <div class="contact-shell">
+        <form class="contact-form" name="contact" netlify netlify-honeypot="bot-field" onsubmit="return handleSubmit(event)">
+          <input type="hidden" name="form-name" value="contact" />
+          <p style="display:none;">
+            <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+          </p>
+          <div class="form-row">
+            <label for="name">Your name</label>
+            <input id="name" name="name" type="text" autocomplete="name" placeholder="Jane Smith" required />
+          </div>
+          <div class="form-row">
+            <label for="org">Organisation</label>
+            <input id="org" name="org" type="text" autocomplete="organization" placeholder="University / RTO / Company" />
+          </div>
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="you@organisation.com" required />
+          </div>
+          <div class="form-row">
+            <label for="msg">What do you need help with?</label>
+            <textarea id="msg" name="msg" placeholder="Tell us about your learning project: course redesign, assessment improvements, online learning development, scenario creation, SCORM packaging, or other learning design needs..." required></textarea>
+          </div>
+
+          <button class="btn primary" type="submit" id="submit-btn" style="justify-self:center;">Send message</button>
+          <div class="note" id="form-note"></div>
+        </form>
+
+        <div class="note" style="text-align:center; margin-top:14px;">
+          Prefer email? <a href="mailto:hello@waypointlearningsolutions.com">hello@waypointlearningsolutions.com</a><br />
+          Or connect on <a href="https://www.linkedin.com/in/david-king-learning-designer/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-row">
+      <div>© <span id="year"></span> Waypoint Learning Solutions</div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#why">Why us</a>
+        <a href="#process">Process</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // -------------------------
+  // INDUSTRY TAB CONTENT
+  // -------------------------
+  const INDUSTRY_SERVICES = {
+    corporate: [
+      {
+        title: "Compliance Training",
+        description: "We design compliance programs that go beyond box-ticking, helping staff understand, apply, and retain critical policies, safety requirements, and regulatory obligations in real workplace contexts.",
+        icon: "icon-learning-strategy.png",
+        alt: "Compliance training icon"
+      },
+      {
+        title: "Instructional Design",
+        description: "We design structured learning experiences that build capability across roles — from onboarding and leadership to customer service and operational excellence.",
+        icon: "icon-instructional-design.png",
+        alt: "Instructional design icon"
+      },
+      {
+        title: "Multimedia Development",
+        description: "We create videos, interactive modules, simulations, and visual learning assets that make complex topics engaging, accessible, and memorable.",
+        icon: "icon-lms-scorm.png",
+        alt: "Multimedia development icon"
+      },
+      {
+        title: "Mobile Learning Solutions",
+        description: "We design mobile-first learning experiences that support people in the flow of work, across phones, tablets, and desktops.",
+        icon: "icon-mobile-learning.png",
+        alt: "Mobile learning solutions icon"
+      }
+    ],
+    universities: [
+      {
+        title: "Curriculum Planning",
+        description: "We support program and subject teams to map learning outcomes, design coherent learning journeys, and align curriculum across a degree.",
+        icon: "icon-curriculum-planning.PNG",
+        alt: "Curriculum planning icon"
+      },
+      {
+        title: "Learning Experience Design",
+        description: "We design engaging online and blended learning experiences that combine content, activities, and interaction to support student success.",
+        icon: "icon-learning-experience-design.PNG",
+        alt: "Learning experience design icon"
+      },
+      {
+        title: "Assessment Strategies",
+        description: "We design authentic, well-aligned assessments, rubrics, and feedback approaches that support learning while meeting academic standards.",
+        icon: "icon-assessment-strategies.PNG",
+        alt: "Assessment strategies icon"
+      },
+      {
+        title: "LMS & SCORM Development",
+        description: "We build, structure, and deploy subjects and learning assets inside your LMS, including SCORM packages, gradebook setups, and learning pathways.",
+        icon: "icon-lms-and-scorm-development.PNG",
+        alt: "LMS and SCORM development icon"
+      }
+    ],
+    vet: [
+      {
+        title: "Training & Assessment Design",
+        description: "We interpret training products and design compliant training and assessment strategies, tools, and mapping that align to units of competency.",
+        icon: "icon-training-and-assessment-design.PNG",
+        alt: "Training and assessment design icon"
+      },
+      {
+        title: "Learner Resource Development",
+        description: "We create practical learner guides, activities, and multimedia that support skills development and workplace application.",
+        icon: "icon-learner-resource-development.PNG",
+        alt: "Learner resource development icon"
+      },
+      {
+        title: "Training Package Compliance",
+        description: "We ensure learning and assessment materials meet regulatory and audit requirements, including mapping, evidence collection, and validation-ready documentation.",
+        icon: "icon-training-package-compliance.PNG",
+        alt: "Training package compliance icon"
+      },
+      {
+        title: "Digital & Mobile Delivery",
+        description: "We design resources that support flexible, online, blended, and workplace-based delivery models across devices.",
+        icon: "icon-mobile-learning.png",
+        alt: "Digital and mobile delivery icon"
+      }
+    ],
+    schools: [
+      {
+        title: "Curriculum & Learning Design",
+        description: "We support teachers and leaders to design coherent units, learning sequences, and assessment approaches aligned to curriculum frameworks and learning goals.",
+        icon: "icon-learning-strategy.png",
+        alt: "Curriculum and learning design icon"
+      },
+      {
+        title: "Digital Learning & Classroom Resources",
+        description: "We design interactive lessons, learning activities, and multimedia that support engagement, differentiation, and formative assessment.",
+        icon: "icon-instructional-design.png",
+        alt: "Digital learning and classroom resources icon"
+      },
+      {
+        title: "Learning Platform Builds",
+        description: "We structure learning inside platforms like Canvas, Google Classroom, or other LMS tools so content, tasks, and feedback are clear and easy to navigate.",
+        icon: "icon-lms-scorm.png",
+        alt: "Learning platform builds icon"
+      },
+      {
+        title: "Student-Friendly Digital Experiences",
+        description: "We ensure learning materials work across devices and are accessible, intuitive, and easy for students to use.",
+        icon: "icon-mobile-learning.png",
+        alt: "Student-friendly digital experiences icon"
+      }
+    ],
+    associations: [
+      {
+        title: "Professional Learning Design",
+        description: "We design CPD pathways, credential-aligned learning journeys, and structured programs that support members' professional growth.",
+        icon: "icon-learning-strategy.png",
+        alt: "Professional learning design icon"
+      },
+      {
+        title: "Case-Based & Practice-Focused Learning",
+        description: "We create scenarios, simulations, and interactive learning that reflect real professional contexts and decision-making.",
+        icon: "icon-instructional-design.png",
+        alt: "Case-based and practice-focused learning icon"
+      },
+      {
+        title: "Platform & Course Builds",
+        description: "We package and deploy learning into your LMS or learning platform, including SCORM courses, tracking, and reporting for member participation.",
+        icon: "icon-lms-scorm.png",
+        alt: "Platform and course builds icon"
+      },
+      {
+        title: "Flexible Member Access",
+        description: "We design learning that members can access anytime, anywhere, across devices.",
+        icon: "icon-mobile-learning.png",
+        alt: "Flexible member access icon"
+      }
+    ]
+  };
+
+  const tabButtons = Array.from(document.querySelectorAll('.itab'));
+  const serviceCardsEl = document.querySelector('.service-cards');
+  const panel = document.getElementById('panel-industry');
+
+  function setServiceCards(services){
+    serviceCardsEl.innerHTML = services.map(service => `
+      <div class="svc">
+        <img src="assets/images/services/${service.icon}" alt="${service.alt}" width="110" height="110" loading="lazy" />
+        <strong>${service.title}</strong>
+        <span>${service.description}</span>
+      </div>
+    `).join('');
+  }
+
+  function activateIndustry(key, tab){
+    tabButtons.forEach(b => b.setAttribute('aria-selected', b === tab ? 'true' : 'false'));
+    panel.setAttribute('aria-labelledby', tab.id);
+    setServiceCards(INDUSTRY_SERVICES[key] || []);
+  }
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.id;
+      const key =
+        id === 'ind-corporate' ? 'corporate' :
+        id === 'ind-universities' ? 'universities' :
+        id === 'ind-vet' ? 'vet' :
+        id === 'ind-schools' ? 'schools' :
+        'associations';
+
+      activateIndustry(key, btn);
+    });
+
+    btn.addEventListener('keydown', (e) => {
+      const keys = ['ArrowRight','ArrowLeft','Home','End'];
+      if (!keys.includes(e.key)) return;
+
+      e.preventDefault();
+      const i = tabButtons.indexOf(btn);
+      let next = i;
+
+      if (e.key === 'ArrowRight') next = (i + 1) % tabButtons.length;
+      if (e.key === 'ArrowLeft') next = (i - 1 + tabButtons.length) % tabButtons.length;
+      if (e.key === 'Home') next = 0;
+      if (e.key === 'End') next = tabButtons.length - 1;
+
+      tabButtons[next].focus();
+      tabButtons[next].click();
+    });
+  });
+
+  // init
+  setServiceCards(INDUSTRY_SERVICES.corporate);
+
+  // Contact form - Netlify Forms
+  async function handleSubmit(event){
+    event.preventDefault();
+    const form = event.target;
+    const submitBtn = document.getElementById('submit-btn');
+    const note = document.getElementById('form-note');
+    
+    // Disable submit button and show loading state
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+    note.textContent = '';
+    note.className = 'note';
+    
+    try {
+      const formData = new FormData(form);
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
+      });
+      
+      if (response.ok) {
+        note.textContent = 'Thanks! Your message has been sent. We\'ll get back to you within 24 hours.';
+        note.className = 'note form-success';
+        form.reset();
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch (error) {
+      note.textContent = 'Sorry, there was an error sending your message. Please try emailing us directly or contact us on LinkedIn.';
+      note.className = 'note form-error';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send message';
+    }
+    
+    return false;
+  }
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Mobile menu toggle
+  const menuToggle = document.querySelector('.menu-toggle');
+  const nav = document.getElementById('main-nav');
+  
+  if (menuToggle && nav) {
+    menuToggle.addEventListener('click', () => {
+      const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+      menuToggle.setAttribute('aria-expanded', !isExpanded);
+      nav.setAttribute('aria-expanded', !isExpanded);
+    });
+    
+    // Close menu when clicking a link
+    const navLinks = nav.querySelectorAll('a');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        menuToggle.setAttribute('aria-expanded', 'false');
+        nav.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+</script>
+</body>
+</html>
