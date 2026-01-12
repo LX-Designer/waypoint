@@ -148,6 +148,7 @@
       min-width: 44px;
     }
     .btn:hover{ background: rgba(255,255,255,.98); text-decoration:none; transform: translateY(-1px); }
+    .btn:active{ transform: translateY(0); opacity: 0.9; } /* Better touch feedback on mobile */
     .btn:focus{ outline:none; box-shadow:var(--focus); }
     .btn.primary{
       border-color: rgba(26,166,183,.35);
@@ -273,6 +274,7 @@
       align-items: center;
     }
     .itab:hover{ background: rgba(255,255,255,.9); color: var(--text); transform: translateY(-1px); }
+    .itab:active{ transform: translateY(0); opacity: 0.85; } /* Better touch feedback on mobile */
     .itab:focus{ outline:none; box-shadow: var(--focus); }
     .itab[aria-selected="true"]{
       background: linear-gradient(135deg, rgba(26,166,183,.12), rgba(59,130,246,.10));
@@ -328,6 +330,7 @@
       box-shadow: 0 16px 34px rgba(17,24,39,.09);
       border-color: rgba(26,166,183,.22);
     }
+    .svc:active{ transform: translateY(0); } /* Better touch feedback on mobile */
 
     /* Icon styling - larger, bare logos */
     .svc img, .why-card img{
@@ -420,6 +423,7 @@
       box-shadow: 0 16px 34px rgba(17,24,39,.09);
       border-color: rgba(59,130,246,.18);
     }
+    .why-card:active{ transform: translateY(0); } /* Better touch feedback on mobile */
     .why-card strong{ display:block; margin-bottom: 6px; }
     .why-card p{ margin:0; color: var(--muted); font-size: 15px; }
 
@@ -637,6 +641,10 @@
         width:100%;
         border-radius:10px;
       }
+      nav a:active{ 
+        background: rgba(17,24,39,.08); 
+        opacity: 0.9;
+      } /* Better touch feedback on mobile */
       .btn{ 
         padding: 14px 18px; 
         border-radius: 13px;
@@ -646,9 +654,20 @@
       .nav{
         position:relative;
       }
+      /* Hide "Get in touch" button on mobile - available in menu */
+      .btn.primary{
+        display: none;
+      }
+      /* Shorten brand text on mobile - hide tagline */
+      .brand-title span{
+        display: none;
+      }
+      .brand{
+        min-width: unset;
+      }
 
       .hero-band{
-        min-height: 380px;
+        min-height: 320px; /* Reduced from 380px for better mobile UX */
         /* Make text readable on small screens */
         background:
           linear-gradient(
@@ -661,30 +680,85 @@
         background-size: cover;
         background-position: center;
       }
-      .hero-inner{ padding: 44px 0; }
-      .hero-copy h1{ font-size: 34px; }
-      .service-cards{ grid-template-columns: 1fr; }
+      .hero-inner{ padding: 36px 0; }
+      .hero-copy{ padding: 0 8px; }
+      .hero-copy h1{ 
+        font-size: 32px; 
+        line-height: 1.2;
+        margin-bottom: 12px;
+      }
+      .hero-copy p{
+        font-size: 15px;
+        line-height: 1.5;
+      }
+      .hero-cta{
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        margin-top: 20px;
+      }
+      .hero-cta .btn{
+        width: 100%;
+        justify-content: center;
+      }
+      .service-cards{ 
+        grid-template-columns: 1fr; 
+        gap: 10px;
+      }
       .process-grid{ grid-template-columns: 1fr; }
       .svc img, .why-card img{
-        width: 90px;
-        height: 90px;
+        width: 70px;
+        height: 70px;
+      }
+      /* Compact service cards on mobile - hide description, show only icon + heading */
+      .svc{
+        padding: 12px;
+        min-height: auto;
+      }
+      .svc span{
+        display: none; /* Hide description text on mobile for compact layout */
       }
       /* Better tab wrapping on very small screens */
       .industry-tabs{
         flex-wrap: wrap;
         justify-content: center;
         padding: 12px 8px 0;
-        gap: 6px;
+        gap: 8px; /* Increased from 6px for better spacing */
       }
       .itab{
-        margin: 0 3px;
-        padding: 12px 16px;
-        font-size: 13px;
+        margin: 0 2px;
+        padding: 10px 14px; /* Optimized padding */
+        font-size: 14px; /* Increased from 13px for better readability */
         min-height: 44px;
       }
       input, textarea{
         font-size: 16px; /* Prevents iOS zoom on focus */
         min-height: 44px;
+        padding: 14px 12px; /* Better padding for mobile */
+      }
+      /* Form optimization for mobile */
+      .contact-shell{
+        width: 100%;
+        padding: 20px 16px; /* Optimized padding */
+      }
+      .form-row{
+        gap: 8px; /* Better spacing between form fields */
+      }
+      /* General mobile spacing improvements */
+      section{
+        padding: 40px 0; /* Reduced from 52px for better mobile UX */
+      }
+      .why-card{
+        padding: 16px; /* Reduced from 20px for mobile */
+      }
+      /* Improve text readability on mobile */
+      .section-sub{
+        font-size: 15px;
+        line-height: 1.5;
+      }
+      .why-card p{
+        font-size: 14px;
+        line-height: 1.5;
       }
     }
 
@@ -1204,6 +1278,18 @@
         menuToggle.setAttribute('aria-expanded', 'false');
         nav.setAttribute('aria-expanded', 'false');
       });
+    });
+    
+    // Close menu when clicking outside (mobile UX improvement)
+    document.addEventListener('click', (e) => {
+      const isMenuOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+      const isClickInsideNav = nav.contains(e.target);
+      const isClickOnToggle = menuToggle.contains(e.target);
+      
+      if (isMenuOpen && !isClickInsideNav && !isClickOnToggle) {
+        menuToggle.setAttribute('aria-expanded', 'false');
+        nav.setAttribute('aria-expanded', 'false');
+      }
     });
   }
 </script>
