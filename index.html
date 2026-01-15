@@ -845,16 +845,15 @@
       .form-row{
         gap: 8px; /* Better spacing between form fields */
       }
-      /* Video modal - mobile: Keep vertical, smaller modal */
+      /* Video modal - mobile: Keep vertical, centered modal */
       .video-modal {
         padding: 10px;
-        align-items: flex-start;
-        padding-top: 20px;
+        align-items: center;
       }
       .video-modal-content {
         max-width: 100%;
         padding: 15px;
-        margin-top: 20px;
+        margin-top: 0;
       }
       .video-modal-iframe-container {
         padding-bottom: 56.25%; /* Maintain 16:9 but smaller */
@@ -1343,7 +1342,7 @@
         <button class="video-modal-close" aria-label="Close video">×</button>
         <div class="video-modal-iframe-container">
           <iframe 
-            src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
+            src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0" 
             frameborder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
             allowfullscreen
