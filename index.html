@@ -338,6 +338,21 @@
     }
     .svc:active{ transform: translateY(0); } /* Better touch feedback on mobile */
 
+    /* Video cards - clickable, simplified design */
+    .svc-video {
+      cursor: pointer;
+      min-height: 160px; /* Reduced since we only have icon + title */
+    }
+    .svc-video:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 34px rgba(17,24,39,.09);
+      border-color: rgba(26,166,183,.3);
+    }
+    .svc-video:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
     /* Icon styling - larger, bare logos */
     .svc img, .why-card img{
       width: 110px;
@@ -361,6 +376,78 @@
       font-size: 15px;
       line-height: 1.5;
       margin-top: 8px;
+    }
+
+    /* Video Modal */
+    .video-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .video-modal-backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(4px);
+    }
+    .video-modal-content {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 20px 60px rgba(17, 24, 39, 0.3);
+      z-index: 1;
+    }
+    .video-modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: rgba(17, 24, 39, 0.1);
+      border-radius: 50%;
+      font-size: 24px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+      transition: all 0.2s ease;
+      z-index: 2;
+    }
+    .video-modal-close:hover {
+      background: rgba(17, 24, 39, 0.2);
+      transform: scale(1.1);
+    }
+    .video-modal-iframe-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+    .video-modal-iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
     }
 
     .svc-bullets{
@@ -758,6 +845,30 @@
       .form-row{
         gap: 8px; /* Better spacing between form fields */
       }
+      /* Video modal - mobile: Keep vertical, smaller modal */
+      .video-modal {
+        padding: 10px;
+        align-items: flex-start;
+        padding-top: 20px;
+      }
+      .video-modal-content {
+        max-width: 100%;
+        padding: 15px;
+        margin-top: 20px;
+      }
+      .video-modal-iframe-container {
+        padding-bottom: 56.25%; /* Maintain 16:9 but smaller */
+        max-height: 50vh; /* Limit height so it stays vertical */
+      }
+      .video-modal-close {
+        top: 5px;
+        right: 5px;
+        width: 40px;
+        height: 40px;
+        font-size: 22px;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 2px 8px rgba(17, 24, 39, 0.2);
+      }
       /* General mobile spacing improvements */
       section{
         padding: 40px 0; /* Reduced from 52px for better mobile UX */
@@ -1052,7 +1163,8 @@
         title: "Compliance Training",
         description: "We design compliance programs that go beyond box-ticking, helping staff understand, apply, and retain critical policies, safety requirements, and regulatory obligations in real workplace contexts.",
         icon: "icon-learning-strategy.png",
-        alt: "Compliance training icon"
+        alt: "Compliance training icon",
+        videoId: "EbWQAs4E9Fs"
       },
       {
         title: "Instructional Design",
@@ -1184,13 +1296,88 @@
   const panel = document.getElementById('panel-industry');
 
   function setServiceCards(services){
-    serviceCardsEl.innerHTML = services.map(service => `
-      <div class="svc">
-        <img src="assets/images/services/${service.icon}" alt="${service.alt}" width="110" height="110" loading="lazy" />
-        <strong>${service.title}</strong>
-        <span>${service.description}</span>
+    serviceCardsEl.innerHTML = services.map((service, index) => {
+      const cardId = `service-card-${index}`;
+      const hasVideo = service.videoId;
+      
+      if (hasVideo) {
+        return `
+          <div class="svc svc-video" data-video-id="${service.videoId}" data-card-id="${cardId}" role="button" tabindex="0" aria-label="Play ${service.title} video">
+            <img src="assets/images/services/${service.icon}" alt="${service.alt}" width="110" height="110" loading="lazy" />
+            <strong>${service.title}</strong>
+          </div>
+        `;
+      } else {
+        return `
+          <div class="svc">
+            <img src="assets/images/services/${service.icon}" alt="${service.alt}" width="110" height="110" loading="lazy" />
+            <strong>${service.title}</strong>
+            <span>${service.description}</span>
+          </div>
+        `;
+      }
+    }).join('');
+    
+    // Add click handlers for video cards - entire card is clickable
+    document.querySelectorAll('.svc-video').forEach(card => {
+      card.addEventListener('click', () => {
+        openVideoModal(card.dataset.videoId);
+      });
+      // Keyboard accessibility
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openVideoModal(card.dataset.videoId);
+        }
+      });
+    });
+  }
+  
+  function openVideoModal(videoId) {
+    // Create modal overlay
+    const modal = document.createElement('div');
+    modal.className = 'video-modal';
+    modal.innerHTML = `
+      <div class="video-modal-backdrop"></div>
+      <div class="video-modal-content">
+        <button class="video-modal-close" aria-label="Close video">×</button>
+        <div class="video-modal-iframe-container">
+          <iframe 
+            src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen
+            class="video-modal-iframe">
+          </iframe>
+        </div>
       </div>
-    `).join('');
+    `;
+    
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+    
+    // Close handlers
+    const closeModal = () => {
+      const iframe = modal.querySelector('.video-modal-iframe');
+      iframe.src = '';
+      modal.remove();
+      document.body.style.overflow = '';
+    };
+    
+    modal.querySelector('.video-modal-close').addEventListener('click', closeModal);
+    modal.querySelector('.video-modal-backdrop').addEventListener('click', closeModal);
+    
+    // ESC key to close
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+        document.removeEventListener('keydown', handleEsc);
+      }
+    };
+    document.addEventListener('keydown', handleEsc);
+    
+    // Focus management
+    modal.querySelector('.video-modal-close').focus();
   }
 
   function activateIndustry(key, tab){
