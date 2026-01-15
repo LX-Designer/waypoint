@@ -139,7 +139,7 @@
       border:1px solid var(--border);
       background: rgba(255,255,255,.85);
       color:var(--text);
-      font-weight:650;
+      font-weight:600;
       cursor:pointer;
       box-shadow: var(--shadow2);
       white-space:nowrap;
@@ -234,18 +234,21 @@
       overflow: visible;
       width: 100%;
       max-width: 100%;
+      position: relative;
     }
 
-    /* industry tabs */
+    /* industry tabs - notepad style */
     .industry-tabs{
       display:flex;
       gap: 0;
       justify-content:center;
-      padding: 18px 16px 12px;
+      padding: 0;
       overflow-x: auto;
       overflow-y: hidden;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none; /* Hide scrollbar on desktop */
+      margin-bottom: -1px; /* Overlap with content border */
+      padding-top: 8px;
     }
     .industry-tabs::-webkit-scrollbar{ 
       height: 8px; 
@@ -258,42 +261,42 @@
 
     .itab{
       flex: 0 0 auto;
-      border: 1px solid rgba(17,24,39,.12);
-      background: rgba(245,247,251,.6);
+      border: 1px solid rgba(17,24,39,.15);
+      border-bottom: none; /* Remove bottom border - will be handled by selected state */
+      background: rgba(245,247,251,.8);
       color: var(--muted);
-      padding: 10px 16px;
+      padding: 12px 24px;
       font-weight: 700;
-      font-size: 13px;
+      font-size: 16px;
+      letter-spacing: 0.1px;
       cursor:pointer;
       position: relative;
-      margin: 0 6px;
-      border-radius: 12px;
-      transition: transform .08s ease, background .08s ease, color .08s ease, border-color .08s ease;
-      min-height: 44px;
+      margin-right: 2px;
+      border-radius: 8px 8px 0 0; /* Rounded top corners only */
+      transition: background .15s ease, color .15s ease, border-color .15s ease;
+      min-height: 48px;
       display: flex;
       align-items: center;
+      z-index: 1;
     }
-    .itab:hover{ background: rgba(255,255,255,.9); color: var(--text); transform: translateY(-1px); }
-    .itab:active{ transform: translateY(0); opacity: 0.85; } /* Better touch feedback on mobile */
+    .itab:hover{ 
+      background: rgba(255,255,255,.95); 
+      color: var(--text); 
+      border-color: rgba(17,24,39,.2);
+    }
+    .itab:active{ opacity: 0.85; } /* Better touch feedback on mobile */
     .itab:focus{ outline:none; box-shadow: var(--focus); }
     .itab[aria-selected="true"]{
-      background: linear-gradient(135deg, rgba(26,166,183,.12), rgba(59,130,246,.10));
-      border-color: rgba(26,166,183,.4);
+      background: var(--surface); /* Match content background */
+      border-color: rgba(17,24,39,.10);
+      border-bottom: 1px solid var(--surface); /* Hide bottom border by matching background */
       color: var(--text);
-      box-shadow: 0 2px 8px rgba(26,166,183,.1);
+      z-index: 2; /* Bring selected tab to front */
+      box-shadow: none;
+      margin-bottom: -1px; /* Overlap with content border */
     }
     .itab[aria-selected="true"]::after{
-      content:"";
-      position:absolute;
-      left:50%;
-      transform: translateX(-50%);
-      bottom: -9px;
-      width: 0; 
-      height: 0;
-      border-left: 9px solid transparent;
-      border-right: 9px solid transparent;
-      border-top: 9px solid rgba(26,166,183,.4);
-      filter: drop-shadow(0 2px 2px rgba(17,24,39,.08));
+      display: none; /* Remove arrow indicator */
     }
 
     .services-content{
@@ -302,6 +305,9 @@
       width: 100%;
       max-width: 100%;
       box-sizing: border-box;
+      border-top: 1px solid rgba(17,24,39,.10); /* Top border connects with tabs */
+      position: relative;
+      z-index: 0; /* Behind tabs */
     }
 
     .service-cards{
@@ -347,12 +353,12 @@
 
     .svc strong{
       display:block;
-      font-size: 14px;
+      font-size: 15px;
       margin-top: 0;
     }
     .svc span{
       color: var(--muted2);
-      font-size: 14px;
+      font-size: 15px;
       line-height: 1.5;
       margin-top: 8px;
     }
@@ -424,7 +430,7 @@
       border-color: rgba(59,130,246,.18);
     }
     .why-card:active{ transform: translateY(0); } /* Better touch feedback on mobile */
-    .why-card strong{ display:block; margin-bottom: 6px; }
+    .why-card strong{ display:block; margin-bottom: 6px; font-size: 15px; }
     .why-card p{ margin:0; color: var(--muted); font-size: 15px; }
 
     /* CONTACT */
@@ -718,18 +724,26 @@
       .svc span{
         display: none; /* Hide description text on mobile for compact layout */
       }
-      /* Better tab wrapping on very small screens */
+      /* Better tab wrapping on very small screens - maintain notepad style */
       .industry-tabs{
         flex-wrap: wrap;
         justify-content: center;
-        padding: 12px 8px 0;
-        gap: 8px; /* Increased from 6px for better spacing */
+        padding: 8px 4px 0;
+        gap: 0;
+        margin-bottom: -1px;
       }
       .itab{
-        margin: 0 2px;
-        padding: 10px 14px; /* Optimized padding */
-        font-size: 14px; /* Increased from 13px for better readability */
-        min-height: 44px;
+        margin-right: 2px;
+        margin-bottom: 0;
+        padding: 12px 16px; /* Optimized padding */
+        font-size: 15px; /* Larger heading style for mobile */
+        font-weight: 700;
+        letter-spacing: 0.1px;
+        min-height: 48px;
+        border-radius: 6px 6px 0 0; /* Slightly smaller radius on mobile */
+      }
+      .itab[aria-selected="true"]{
+        margin-bottom: -1px; /* Maintain overlap on mobile */
       }
       input, textarea{
         font-size: 16px; /* Prevents iOS zoom on focus */
@@ -1115,7 +1129,7 @@
       {
         title: "Curriculum & Learning Design",
         description: "We support teachers and leaders to design coherent units, learning sequences, and assessment approaches aligned to curriculum frameworks and learning goals.",
-        icon: "icon-learning-strategy.png",
+        icon: "icon-curriculum-planning.PNG",
         alt: "Curriculum and learning design icon"
       },
       {
@@ -1127,13 +1141,13 @@
       {
         title: "Learning Platform Builds",
         description: "We structure learning inside platforms like Canvas, Google Classroom, or other LMS tools so content, tasks, and feedback are clear and easy to navigate.",
-        icon: "icon-lms-scorm.png",
+        icon: "icon-platform-and-course-builds.PNG",
         alt: "Learning platform builds icon"
       },
       {
         title: "Student-Friendly Digital Experiences",
         description: "We ensure learning materials work across devices and are accessible, intuitive, and easy for students to use.",
-        icon: "icon-mobile-learning.png",
+        icon: "icon-student-friendly-digital-experiences.PNG",
         alt: "Student-friendly digital experiences icon"
       }
     ],
@@ -1141,25 +1155,25 @@
       {
         title: "Professional Learning Design",
         description: "We design CPD pathways, credential-aligned learning journeys, and structured programs that support members' professional growth.",
-        icon: "icon-learning-strategy.png",
+        icon: "icon-professional-learning-design.PNG",
         alt: "Professional learning design icon"
       },
       {
         title: "Case-Based & Practice-Focused Learning",
         description: "We create scenarios, simulations, and interactive learning that reflect real professional contexts and decision-making.",
-        icon: "icon-instructional-design.png",
+        icon: "icon-case-based-and-practice-focused-learning.PNG",
         alt: "Case-based and practice-focused learning icon"
       },
       {
         title: "Platform & Course Builds",
         description: "We package and deploy learning into your LMS or learning platform, including SCORM courses, tracking, and reporting for member participation.",
-        icon: "icon-lms-scorm.png",
+        icon: "icon-platform-and-course-builds.PNG",
         alt: "Platform and course builds icon"
       },
       {
         title: "Flexible Member Access",
         description: "We design learning that members can access anytime, anywhere, across devices.",
-        icon: "icon-mobile-learning.png",
+        icon: "icon-flexible-member-access.PNG",
         alt: "Flexible member access icon"
       }
     ]
