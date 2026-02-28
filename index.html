@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Waypoint Learning Solutions</title>
-  <meta name="description" content="Waypoint Learning Solutions — Designing learning with direction. Strategy, design, scenarios, and LMS/SCORM builds." />
+  <title>Driftline Learning Design</title>
+  <meta name="description" content="Driftline Learning Design — Designing direction. Custom course design and development for universities, VET, professional associations, and corporate sectors." />
 
   <style>
     :root{
@@ -77,6 +77,7 @@
       box-shadow: var(--shadow2);
       display:block;
       flex-shrink: 0;
+      background: transparent;
     }
     .logo img{
       width:100%;
@@ -84,6 +85,7 @@
       object-fit: contain;
       display:block;
       border-radius:12px;
+      background: transparent;
     }
     .brand-title{ display:flex; flex-direction:column; line-height:1.1; }
     .brand-title strong{ font-size:14px; letter-spacing:.2px; }
@@ -223,7 +225,7 @@
 
     /* SERVICES (industry tabs + icon row + bullet list) */
     .services{
-      background: transparent;
+      background: rgba(255,255,255,.55);
     }
     .services-shell{
       margin-top: 18px;
@@ -312,9 +314,10 @@
 
     .service-cards{
       display:grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
       align-items: stretch;
+      margin-top: 18px;
     }
 
     .svc{
@@ -492,32 +495,38 @@
       line-height: 1;
     }
 
-    /* WHY CHOOSE US (3 feature cards) */
+    /* WHO WE WORK WITH */
     .why{
-      background: rgba(255,255,255,.55);
+      background: transparent;
     }
     .why-grid{
       display:grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
       margin-top: 18px;
     }
     .why-card{
       border: 1px solid rgba(17,24,39,.10);
       background: rgba(255,255,255,.88);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow2);
+      border-radius: 16px;
+      box-shadow: 0 12px 26px rgba(17,24,39,.06);
       padding: 20px;
       text-align:center;
+      display:flex;
+      flex-direction: column;
+      gap: 0;
+      align-items: center;
+      min-height: 190px;
       transition: transform .10s ease, box-shadow .10s ease, border-color .10s ease;
     }
     .why-card:hover{
       transform: translateY(-2px);
       box-shadow: 0 16px 34px rgba(17,24,39,.09);
-      border-color: rgba(59,130,246,.18);
+      border-color: rgba(26,166,183,.22);
     }
     .why-card:active{ transform: translateY(0); } /* Better touch feedback on mobile */
-    .why-card strong{ display:block; margin-bottom: 6px; font-size: 15px; }
+    .why-card strong{ display:block; margin-top: 0; font-size: 15px; }
+    .why-card span{ color: var(--muted2); font-size: 15px; line-height: 1.5; margin-top: 8px; }
     .why-card p{ margin:0; color: var(--muted); font-size: 15px; }
 
     /* CONTACT */
@@ -556,13 +565,13 @@
 
     .note{ font-size:12px; color: var(--muted2); margin-top: 10px; }
 
-    /* HOW WE WORK */
+    /* OUR APPROACH */
     .process{
-      background: transparent;
+      background: rgba(255,255,255,.55);
     }
     .process-grid{
       display:grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 16px;
       margin-top: 18px;
     }
@@ -686,19 +695,11 @@
     @media (max-width: 980px){
       .hero-copy h1{ font-size: 38px; }
       .service-cards{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .why-grid{ grid-template-columns: 1fr; }
+      .why-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .process-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .testimonials-grid{ grid-template-columns: 1fr; }
       .bullets{ grid-template-columns: 1fr; }
       .brand{ min-width: unset; }
       .hero-band{ background-position: center; }
-      /* Show scrollbar on mobile when needed */
-      .industry-tabs::-webkit-scrollbar{ 
-        display: block; 
-      }
-      .industry-tabs{
-        scrollbar-width: thin;
-      }
     }
 
     @media (max-width: 560px){
@@ -811,6 +812,14 @@
       .svc span{
         display: none; /* Hide description text on mobile for compact layout */
       }
+      .why-grid{ grid-template-columns: 1fr; }
+      .why-card{
+        padding: 12px;
+        min-height: auto;
+      }
+      .why-card span{
+        display: none; /* Hide description text on mobile for compact layout */
+      }
       /* Better tab wrapping on very small screens - maintain notepad style */
       .industry-tabs{
         flex-wrap: wrap;
@@ -898,11 +907,11 @@
     <div class="nav">
       <div class="brand">
         <div class="logo">
-          <img src="assets/images/logos/icon-main-logo.png" alt="Waypoint Learning Solutions logo" width="38" height="38" />
+          <img src="assets/images/logos/logo-only.svg" alt="Driftline Learning Design logo" width="38" height="38" />
         </div>
         <div class="brand-title">
-          <strong>Waypoint Learning Solutions</strong>
-          <span>Designing learning with direction</span>
+          <strong>Driftline Learning Design</strong>
+          <span>Designing direction</span>
         </div>
       </div>
 
@@ -914,11 +923,10 @@
 
       <nav id="main-nav" aria-label="Primary" aria-expanded="false">
         <ul>
-          <li><a href="#about">About</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#why">Why us</a></li>
-          <li><a href="#process">Process</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#services">What We Do</a></li>
+          <li><a href="#who">Who We Work With</a></li>
+          <li><a href="#approach">Our Approach</a></li>
+          <li><a href="#contact">Work With Us</a></li>
         </ul>
       </nav>
 
@@ -933,163 +941,105 @@
     <div class="hero-band">
       <div class="hero-inner">
         <div class="hero-copy">
-          <h1>Waypoint Learning Solutions</h1>
+          <h1>Driftline Learning Design</h1>
           <p>
-            We combine <strong>learning science with practical design</strong> to create intentional learning experiences that deliver real impact.
-            From strategy to implementation, we help universities, VET providers, schools, associations, and organisations move from content to capability.
+            <strong>Designing direction.</strong>
+          </p>
+          <p>
+            Driftline is a boutique learning design agency specialising in custom course design and development.
+          </p>
+          <p>
+            We turn subject matter expertise into structured learning that drives performance, compliance, and growth.
           </p>
           <div class="hero-cta">
-            <a class="btn primary" href="#contact">Get started</a>
-            <a class="btn" href="#services">View services</a>
+            <a class="btn primary" href="#contact">Work With Us</a>
+            <a class="btn" href="#services">What We Do</a>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about" class="about">
-    <div class="container center">
-      <h2 class="section-title">About Us</h2>
-      <p class="blurb">
-        Waypoint Learning Solutions partners with organisations and education providers to design learning that’s practical,
-        engaging, and delivery-ready. From program strategy and curriculum design through to multimedia and LMS/SCORM builds,
-        we help you move from “content” to capability.
-      </p>
     </div>
   </section>
 
   <!-- SERVICES -->
   <section id="services" class="services">
     <div class="container center">
-      <h2 class="section-title">Our Services</h2>
-      <p class="section-sub">Solutions by industry — choose your context to find out more.</p>
+      <h2 class="section-title">What We Do</h2>
+      <p class="section-sub">We work in three core areas.</p>
 
-      <div class="services-shell" role="region" aria-label="Services by industry">
-        <div class="industry-tabs" role="tablist" aria-label="Industries">
-          <button class="itab" role="tab" id="ind-corporate" aria-controls="panel-industry" aria-selected="true">Corporate</button>
-          <button class="itab" role="tab" id="ind-universities" aria-controls="panel-industry" aria-selected="false">Universities</button>
-          <button class="itab" role="tab" id="ind-vet" aria-controls="panel-industry" aria-selected="false">VET & RTOs</button>
-          <button class="itab" role="tab" id="ind-schools" aria-controls="panel-industry" aria-selected="false">Schools</button>
-          <button class="itab" role="tab" id="ind-associations" aria-controls="panel-industry" aria-selected="false">Associations</button>
+      <div class="service-cards" aria-label="Service categories">
+        <div class="svc">
+          <img src="assets/images/services/icon-learning-strategy.png" alt="Learning Strategy icon" width="110" height="110" loading="lazy" />
+          <strong>Learning Strategy</strong>
+          <span>We translate expertise into a clear, viable course plan. Together, we define purpose, audience, delivery model, regulatory considerations, assessment approach, and launch pathway — producing a structured blueprint ready for development.</span>
         </div>
 
-        <div id="panel-industry" class="services-content" role="tabpanel" tabindex="0" aria-labelledby="ind-corporate">
-          <div class="service-cards" aria-label="Service categories">
-            <div class="svc">
-              <img src="assets/images/services/icon-learning-strategy.png" alt="Compliance training icon" width="110" height="110" loading="lazy" />
-              <strong>Compliance Training</strong>
-              <span>We design compliance programs that go beyond box-ticking, helping staff understand, apply, and retain critical policies, safety requirements, and regulatory obligations in real workplace contexts.</span>
-            </div>
+        <div class="svc">
+          <img src="assets/images/services/icon-instructional-design.png" alt="Learning Products icon" width="110" height="110" loading="lazy" />
+          <strong>Learning Products</strong>
+          <span>We develop high-quality courses that are clear, practical, and ready to deliver. Our work includes university subject redesigns, professional development courses, audit-ready VET training packages, and CPD or micro-credential offerings. Each course is thoughtfully structured, easy to navigate, and designed to fit your learning environment.</span>
+        </div>
 
-            <div class="svc">
-              <img src="assets/images/services/icon-instructional-design.png" alt="Instructional design icon" width="110" height="110" loading="lazy" />
-              <strong>Instructional Design</strong>
-              <span>We design structured learning experiences that build capability across roles — from onboarding and leadership to customer service and operational excellence.</span>
-            </div>
-
-            <div class="svc">
-              <img src="assets/images/services/icon-lms-scorm.png" alt="Multimedia development icon" width="110" height="110" loading="lazy" />
-              <strong>Multimedia Development</strong>
-              <span>We create videos, interactive modules, simulations, and visual learning assets that make complex topics engaging, accessible, and memorable.</span>
-            </div>
-
-            <div class="svc">
-              <img src="assets/images/services/icon-mobile-learning.png" alt="Mobile learning solutions icon" width="110" height="110" loading="lazy" />
-              <strong>Mobile Learning Solutions</strong>
-              <span>We design mobile-first learning experiences that support people in the flow of work, across phones, tablets, and desktops.</span>
-            </div>
-          </div>
+        <div class="svc">
+          <img src="assets/images/services/icon-lms-scorm.png" alt="Digital Implementation icon" width="110" height="110" loading="lazy" />
+          <strong>Digital Implementation</strong>
+          <span>We build your course inside the platform where it will live — clearly structured, easy to navigate, ready for learners. This includes LMS course builds, multimedia integration, accessibility considerations, and platform configuration, ensuring everything functions smoothly from day one.</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- WHY CHOOSE US -->
-  <section id="why" class="why">
+  <!-- WHO WE WORK WITH -->
+  <section id="who" class="why">
     <div class="container center">
-      <h2 class="section-title">Why Choose Us?</h2>
-      <p class="section-sub">A practical, partner-style approach — with strong design thinking and reliable builds.</p>
+      <h2 class="section-title">Who We Work With</h2>
+      <p class="section-sub">We understand the regulatory, operational, and learner expectations unique to each environment — and design accordingly.</p>
 
       <div class="why-grid">
         <div class="why-card">
-          <img src="assets/images/why/icon-expert-learning-design.png" alt="Expert learning design icon" width="110" height="110" loading="lazy" />
-          <strong>Expert Learning Design</strong>
-          <p>Clear structure, strong alignment, and learning that's built for real people and real contexts.</p>
+          <img src="assets/images/services/icon-curriculum-planning.PNG" alt="Universities icon" width="110" height="110" loading="lazy" />
+          <strong>Universities</strong>
+          <span>Higher education providers seeking curriculum redesign, subject development, assessment strategies, and learning experience design that supports student success.</span>
         </div>
         <div class="why-card">
-          <img src="assets/images/why/icon-learning-technology.png" alt="Learning technology icon" width="110" height="110" loading="lazy" />
-          <strong>Build-Ready Delivery</strong>
-          <p>From multimedia to SCORM and LMS builds — implementation quality is part of the service.</p>
+          <img src="assets/images/services/icon-training-and-assessment-design.PNG" alt="RTOs icon" width="110" height="110" loading="lazy" />
+          <strong>RTOs</strong>
+          <span>VET and RTO organisations needing audit-ready training packages, compliant assessment tools, learner resources, and flexible delivery models.</span>
         </div>
         <div class="why-card">
-          <img src="assets/images/why/icon-client-partnerships.png" alt="Client partnership icon" width="110" height="110" loading="lazy" />
-          <strong>Client-Focused Partnership</strong>
-          <p>We clarify what matters, move fast, and iterate with you to land something you can run with.</p>
+          <img src="assets/images/services/icon-professional-learning-design.PNG" alt="Professional Associations icon" width="110" height="110" loading="lazy" />
+          <strong>Professional Associations</strong>
+          <span>Associations developing CPD pathways, credential-aligned learning, case-based learning, and member-focused professional development programs.</span>
+        </div>
+        <div class="why-card">
+          <img src="assets/images/services/icon-learning-strategy.png" alt="Businesses icon" width="110" height="110" loading="lazy" />
+          <strong>Small & Large Businesses</strong>
+          <span>Corporate and regulated sectors requiring compliance training, leadership development, onboarding programs, and performance-focused learning solutions.</span>
         </div>
       </div>
-
     </div>
   </section>
 
-  <!-- HOW WE WORK -->
-  <section id="process" class="process">
+  <!-- OUR APPROACH -->
+  <section id="approach" class="process">
     <div class="container center">
-      <h2 class="section-title">How We Work</h2>
+      <h2 class="section-title">Our Approach</h2>
       <p class="section-sub">A clear, collaborative process from discovery to deployment.</p>
 
       <div class="process-grid">
         <div class="process-step">
           <div class="process-number">1</div>
-          <strong>Discovery & Strategy</strong>
-          <p>We start by understanding your goals, learners, and context. Together, we define clear outcomes and map the learning journey.</p>
+          <strong>Define what you're building.</strong>
+          <p>Clarify purpose, audience, delivery model, and practical requirements before development begins.</p>
         </div>
         <div class="process-step">
           <div class="process-number">2</div>
-          <strong>Design & Development</strong>
-          <p>We create learning blueprints, design activities, and develop content that aligns with your objectives and engages learners.</p>
+          <strong>Develop the course.</strong>
+          <p>Turn the plan into a structured learning experience designed to meet the needs of your learners.</p>
         </div>
         <div class="process-step">
           <div class="process-number">3</div>
-          <strong>Build & Test</strong>
-          <p>We build your learning solution, package it for your platform, and thoroughly test to ensure everything works as intended.</p>
-        </div>
-        <div class="process-step">
-          <div class="process-number">4</div>
-          <strong>Deploy & Support</strong>
-          <p>We help you launch successfully and provide support to ensure your learning program runs smoothly from day one.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section id="testimonials" class="testimonials">
-    <div class="container center">
-      <h2 class="section-title">What Clients Say</h2>
-      <p class="section-sub">Hear from organisations we've helped transform their learning programs.</p>
-
-      <div class="testimonials-grid">
-        <div class="testimonial-card">
-          <p class="testimonial-text">"Waypoint transformed our online course structure. The learning design was clear, engaging, and our students actually completed the modules. Highly recommend."</p>
-          <div class="testimonial-author">
-            <strong>Dr. Sarah Chen</strong>
-            <span>Academic Director, University</span>
-          </div>
-        </div>
-        <div class="testimonial-card">
-          <p class="testimonial-text">"The scenario-based learning they created for our leadership program was exactly what we needed. It's practical, relevant, and our managers are using it in real situations."</p>
-          <div class="testimonial-author">
-            <strong>Michael Torres</strong>
-            <span>Learning & Development Manager, Corporate</span>
-          </div>
-        </div>
-        <div class="testimonial-card">
-          <p class="testimonial-text">"From assessment redesign to SCORM packaging, Waypoint delivered everything we needed. The quality was excellent and the process was smooth."</p>
-          <div class="testimonial-author">
-            <strong>Jennifer Park</strong>
-            <span>Training Manager, RTO</span>
-          </div>
+          <strong>Make it work.</strong>
+          <p>Build and configure your learning platform so it functions clearly and reliably from launch.</p>
         </div>
       </div>
     </div>
@@ -1098,8 +1048,8 @@
   <!-- CONTACT -->
   <section id="contact" class="contact">
     <div class="container center">
-      <h2 class="section-title">Get In Touch</h2>
-      <p class="section-sub">Ready to move learning forward? Send a note and we'll respond within 24 hours with a clear next step.</p>
+      <h2 class="section-title">Work With Us</h2>
+      <p class="section-sub">If you're reviewing a program, designing a new course, or strengthening compliance and delivery, let's talk.</p>
 
       <div class="contact-shell">
         <form class="contact-form" name="contact" netlify netlify-honeypot="bot-field" onsubmit="return handleSubmit(event)">
@@ -1121,7 +1071,7 @@
           </div>
           <div class="form-row">
             <label for="msg">What do you need help with?</label>
-            <textarea id="msg" name="msg" placeholder="Tell us about your learning project: course redesign, assessment improvements, online learning development, scenario creation, SCORM packaging, or other learning design needs..." required></textarea>
+            <textarea id="msg" name="msg" placeholder="Tell us about your learning project: program review, course design, compliance requirements, or other learning design needs..." required></textarea>
           </div>
 
           <button class="btn primary" type="submit" id="submit-btn" style="justify-self:center;">Send message</button>
@@ -1129,7 +1079,7 @@
         </form>
 
         <div class="note" style="text-align:center; margin-top:14px;">
-          Prefer email? <a href="mailto:hello@waypointlearningsolutions.com">hello@waypointlearningsolutions.com</a><br />
+          Prefer email? <a href="mailto:hello@driftlinelearning.com">hello@driftlinelearning.com</a><br />
           Or connect on <a href="https://www.linkedin.com/in/david-king-learning-designer/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
       </div>
@@ -1140,198 +1090,19 @@
 <footer>
   <div class="container">
     <div class="footer-row">
-      <div>© <span id="year"></span> Waypoint Learning Solutions</div>
+      <div>© <span id="year"></span> Driftline Learning Design</div>
       <div style="display:flex; gap:12px; flex-wrap:wrap;">
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#why">Why us</a>
-        <a href="#process">Process</a>
-        <a href="#contact">Contact</a>
+        <a href="#services">What We Do</a>
+        <a href="#who">Who We Work With</a>
+        <a href="#approach">Our Approach</a>
+        <a href="#contact">Work With Us</a>
       </div>
     </div>
   </div>
 </footer>
 
 <script>
-  // -------------------------
-  // INDUSTRY TAB CONTENT
-  // -------------------------
-  const INDUSTRY_SERVICES = {
-    corporate: [
-      {
-        title: "Compliance Training",
-        description: "We design compliance programs that go beyond box-ticking, helping staff understand, apply, and retain critical policies, safety requirements, and regulatory obligations in real workplace contexts.",
-        icon: "icon-learning-strategy.png",
-        alt: "Compliance training icon",
-        videoId: "EbWQAs4E9Fs"
-      },
-      {
-        title: "Instructional Design",
-        description: "We design structured learning experiences that build capability across roles — from onboarding and leadership to customer service and operational excellence.",
-        icon: "icon-instructional-design.png",
-        alt: "Instructional design icon"
-      },
-      {
-        title: "Multimedia Development",
-        description: "We create videos, interactive modules, simulations, and visual learning assets that make complex topics engaging, accessible, and memorable.",
-        icon: "icon-lms-scorm.png",
-        alt: "Multimedia development icon"
-      },
-      {
-        title: "Mobile Learning Solutions",
-        description: "We design mobile-first learning experiences that support people in the flow of work, across phones, tablets, and desktops.",
-        icon: "icon-mobile-learning.png",
-        alt: "Mobile learning solutions icon"
-      }
-    ],
-    universities: [
-      {
-        title: "Curriculum Planning",
-        description: "We support program and subject teams to map learning outcomes, design coherent learning journeys, and align curriculum across a degree.",
-        icon: "icon-curriculum-planning.PNG",
-        alt: "Curriculum planning icon"
-      },
-      {
-        title: "Learning Experience Design",
-        description: "We design engaging online and blended learning experiences that combine content, activities, and interaction to support student success.",
-        icon: "icon-learning-experience-design.PNG",
-        alt: "Learning experience design icon"
-      },
-      {
-        title: "Assessment Strategies",
-        description: "We design authentic, well-aligned assessments, rubrics, and feedback approaches that support learning while meeting academic standards.",
-        icon: "icon-assessment-strategies.PNG",
-        alt: "Assessment strategies icon"
-      },
-      {
-        title: "LMS & SCORM Development",
-        description: "We build, structure, and deploy subjects and learning assets inside your LMS, including SCORM packages, gradebook setups, and learning pathways.",
-        icon: "icon-lms-and-scorm-development.PNG",
-        alt: "LMS and SCORM development icon"
-      }
-    ],
-    vet: [
-      {
-        title: "Training & Assessment Design",
-        description: "We interpret training products and design compliant training and assessment strategies, tools, and mapping that align to units of competency.",
-        icon: "icon-training-and-assessment-design.PNG",
-        alt: "Training and assessment design icon"
-      },
-      {
-        title: "Learner Resource Development",
-        description: "We create practical learner guides, activities, and multimedia that support skills development and workplace application.",
-        icon: "icon-learner-resource-development.PNG",
-        alt: "Learner resource development icon"
-      },
-      {
-        title: "Training Package Compliance",
-        description: "We ensure learning and assessment materials meet regulatory and audit requirements, including mapping, evidence collection, and validation-ready documentation.",
-        icon: "icon-training-package-compliance.PNG",
-        alt: "Training package compliance icon"
-      },
-      {
-        title: "Digital & Mobile Delivery",
-        description: "We design resources that support flexible, online, blended, and workplace-based delivery models across devices.",
-        icon: "icon-mobile-learning.png",
-        alt: "Digital and mobile delivery icon"
-      }
-    ],
-    schools: [
-      {
-        title: "Curriculum & Learning Design",
-        description: "We support teachers and leaders to design coherent units, learning sequences, and assessment approaches aligned to curriculum frameworks and learning goals.",
-        icon: "icon-curriculum-planning.PNG",
-        alt: "Curriculum and learning design icon"
-      },
-      {
-        title: "Digital Learning & Classroom Resources",
-        description: "We design interactive lessons, learning activities, and multimedia that support engagement, differentiation, and formative assessment.",
-        icon: "icon-instructional-design.png",
-        alt: "Digital learning and classroom resources icon"
-      },
-      {
-        title: "Learning Platform Builds",
-        description: "We structure learning inside platforms like Canvas, Google Classroom, or other LMS tools so content, tasks, and feedback are clear and easy to navigate.",
-        icon: "icon-platform-and-course-builds.PNG",
-        alt: "Learning platform builds icon"
-      },
-      {
-        title: "Student-Friendly Digital Experiences",
-        description: "We ensure learning materials work across devices and are accessible, intuitive, and easy for students to use.",
-        icon: "icon-student-friendly-digital-experiences.PNG",
-        alt: "Student-friendly digital experiences icon"
-      }
-    ],
-    associations: [
-      {
-        title: "Professional Learning Design",
-        description: "We design CPD pathways, credential-aligned learning journeys, and structured programs that support members' professional growth.",
-        icon: "icon-professional-learning-design.PNG",
-        alt: "Professional learning design icon"
-      },
-      {
-        title: "Case-Based & Practice-Focused Learning",
-        description: "We create scenarios, simulations, and interactive learning that reflect real professional contexts and decision-making.",
-        icon: "icon-case-based-and-practice-focused-learning.PNG",
-        alt: "Case-based and practice-focused learning icon"
-      },
-      {
-        title: "Platform & Course Builds",
-        description: "We package and deploy learning into your LMS or learning platform, including SCORM courses, tracking, and reporting for member participation.",
-        icon: "icon-platform-and-course-builds.PNG",
-        alt: "Platform and course builds icon"
-      },
-      {
-        title: "Flexible Member Access",
-        description: "We design learning that members can access anytime, anywhere, across devices.",
-        icon: "icon-flexible-member-access.PNG",
-        alt: "Flexible member access icon"
-      }
-    ]
-  };
-
-  const tabButtons = Array.from(document.querySelectorAll('.itab'));
-  const serviceCardsEl = document.querySelector('.service-cards');
-  const panel = document.getElementById('panel-industry');
-
-  function setServiceCards(services){
-    serviceCardsEl.innerHTML = services.map((service, index) => {
-      const cardId = `service-card-${index}`;
-      const hasVideo = service.videoId;
-      
-      if (hasVideo) {
-        return `
-          <div class="svc svc-video" data-video-id="${service.videoId}" data-card-id="${cardId}" role="button" tabindex="0" aria-label="Play ${service.title} video">
-            <img src="assets/images/services/${service.icon}" alt="${service.alt}" width="110" height="110" loading="lazy" />
-            <strong>${service.title}</strong>
-          </div>
-        `;
-      } else {
-        return `
-          <div class="svc">
-            <img src="assets/images/services/${service.icon}" alt="${service.alt}" width="110" height="110" loading="lazy" />
-            <strong>${service.title}</strong>
-            <span>${service.description}</span>
-          </div>
-        `;
-      }
-    }).join('');
-    
-    // Add click handlers for video cards - entire card is clickable
-    document.querySelectorAll('.svc-video').forEach(card => {
-      card.addEventListener('click', () => {
-        openVideoModal(card.dataset.videoId);
-      });
-      // Keyboard accessibility
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          openVideoModal(card.dataset.videoId);
-        }
-      });
-    });
-  }
-  
+  // Video modal functionality (if needed in future)
   function openVideoModal(videoId) {
     // Create modal overlay
     const modal = document.createElement('div');
@@ -1378,46 +1149,6 @@
     // Focus management
     modal.querySelector('.video-modal-close').focus();
   }
-
-  function activateIndustry(key, tab){
-    tabButtons.forEach(b => b.setAttribute('aria-selected', b === tab ? 'true' : 'false'));
-    panel.setAttribute('aria-labelledby', tab.id);
-    setServiceCards(INDUSTRY_SERVICES[key] || []);
-  }
-
-  tabButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.id;
-      const key =
-        id === 'ind-corporate' ? 'corporate' :
-        id === 'ind-universities' ? 'universities' :
-        id === 'ind-vet' ? 'vet' :
-        id === 'ind-schools' ? 'schools' :
-        'associations';
-
-      activateIndustry(key, btn);
-    });
-
-    btn.addEventListener('keydown', (e) => {
-      const keys = ['ArrowRight','ArrowLeft','Home','End'];
-      if (!keys.includes(e.key)) return;
-
-      e.preventDefault();
-      const i = tabButtons.indexOf(btn);
-      let next = i;
-
-      if (e.key === 'ArrowRight') next = (i + 1) % tabButtons.length;
-      if (e.key === 'ArrowLeft') next = (i - 1 + tabButtons.length) % tabButtons.length;
-      if (e.key === 'Home') next = 0;
-      if (e.key === 'End') next = tabButtons.length - 1;
-
-      tabButtons[next].focus();
-      tabButtons[next].click();
-    });
-  });
-
-  // init
-  setServiceCards(INDUSTRY_SERVICES.corporate);
 
   // Contact form - Netlify Forms
   async function handleSubmit(event){
