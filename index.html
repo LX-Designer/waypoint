@@ -613,6 +613,14 @@
       min-height: 44px;
       box-sizing: border-box;
     }
+    input::placeholder, textarea::placeholder{
+      color: var(--muted2);
+      opacity: 1;
+    }
+    input:focus::placeholder, textarea:focus::placeholder{
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
     input:focus, textarea:focus, select:focus{
       outline:none;
       box-shadow: var(--focus);
@@ -978,8 +986,8 @@
       .nav{
         position:relative;
       }
-      /* Hide "Get in touch" button on mobile - available in menu */
-      .btn.primary{
+      /* Hide "Get in touch" button in header on mobile - available in menu */
+      header .btn.primary{
         display: none;
       }
       /* Shorten brand text on mobile - hide tagline */
@@ -1348,7 +1356,7 @@
           </div>
           <div class="form-row">
             <label for="msg">What do you need help with?</label>
-            <textarea id="msg" name="msg" placeholder="Tell us about your learning project: program review, course design, compliance requirements, or other learning design needs..." required></textarea>
+            <textarea id="msg" name="msg" placeholder="Tell us about your project..." required></textarea>
           </div>
 
           <button class="btn primary" type="submit" id="submit-btn">Send message</button>
@@ -1724,6 +1732,19 @@
   
   document.querySelectorAll('.fade-in').forEach(el => {
     observer.observe(el);
+  });
+
+  // Ensure placeholders disappear on focus
+  const formInputs = document.querySelectorAll('input, textarea');
+  formInputs.forEach(input => {
+    input.addEventListener('focus', function() {
+      this.setAttribute('data-focused', 'true');
+    });
+    input.addEventListener('blur', function() {
+      if (!this.value) {
+        this.removeAttribute('data-focused');
+      }
+    });
   });
 
   // Mobile menu toggle
