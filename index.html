@@ -7,7 +7,7 @@
   <meta name="description" content="Driftline Learning Design — Designing direction. Custom course design and development for universities, VET, professional associations, and corporate sectors." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&family=Sora:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -39,9 +39,10 @@
     }
 
     *{ box-sizing:border-box; }
-    html{ scroll-behavior:smooth; }
+    html{ scroll-behavior:smooth; overflow-x: hidden; }
     body{
       margin:0;
+      overflow-x: hidden;
       font-family: var(--font-sans);
       font-size: 16px;
       color:var(--text);
@@ -92,20 +93,35 @@
       display:flex; align-items:center; justify-content:space-between;
       padding:14px 0; gap:14px;
     }
-    .brand{ display:flex; align-items:center; gap:12px; min-width:240px; }
-    .logo{
-      width:38px; height:38px; border-radius:12px;
-      box-shadow: var(--shadow2);
-      display:block;
+    .brand{ 
+      display:inline-flex; 
+      align-items:center; 
+      gap:12px; 
+      min-width:auto;
+      padding: 8px 0;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .logo,
+    .site-logo{
+      display: inline-flex;
+      align-items: center;
+      padding: 0;
+      line-height: 0;
       flex-shrink: 0;
       background: transparent;
+      border-radius: 0;
+      box-shadow: none;
+      width: auto;
+      height: auto;
     }
-    .logo img{
-      width:100%;
-      height:100%;
+    .logo img,
+    .site-logo img{
+      height: 52px;
+      width: auto;
+      display: block;
       object-fit: contain;
-      display:block;
-      border-radius:12px;
+      border-radius: 0;
       background: transparent;
     }
     .brand-title{ display:flex; flex-direction:column; line-height:1.1; }
@@ -207,6 +223,10 @@
       background: linear-gradient(135deg, var(--accent-hover), #2b7ef6);
       box-shadow: 0 8px 24px rgba(26,166,183,.35);
       color: white;
+      transform: translateY(-2px);
+    }
+    .btn{
+      transition: all 0.2s ease;
     }
 
     /* HERO (banner image background + HTML text) */
@@ -222,6 +242,24 @@
       display:grid;
       align-items:center;
       background: var(--surface);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Subtle background pattern - architectural grid */
+    .hero-band::before{
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: 
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(17,24,39,0.04) 2px, rgba(17,24,39,0.04) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(17,24,39,0.04) 2px, rgba(17,24,39,0.04) 4px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-inner{
+      position: relative;
+      z-index: 1;
     }
 
     .hero-inner{
@@ -242,12 +280,27 @@
 
     .hero-copy h1{
       font-family: var(--font-sans);
-      margin:0 0 16px;
-      font-size:52px;
+      margin:0 0 12px;
+      font-size:64px;
       font-weight: 700;
       line-height:1.1;
-      letter-spacing:-.8px;
+      letter-spacing:-0.02em;
       color:rgba(17,24,39,.95);
+    }
+    .hero-copy .hero-subheading{
+      font-size:20px;
+      color:#4b5563;
+      margin:12px auto 24px;
+      font-weight: 400;
+      line-height: 1.5;
+      text-align: center;
+      max-width: 100%;
+    }
+    .hero-copy .hero-credibility{
+      font-size:14px;
+      color:var(--muted);
+      margin-top: 16px;
+      letter-spacing: 0.02em;
     }
     .hero-copy p{
       margin:0 0 20px;
@@ -261,21 +314,44 @@
 
     .hero-cta{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
 
-    /* ABOUT (center like screenshot) */
+    /* ABOUT (centred, header on top) */
     .about{
-      background: rgba(255,255,255,.55);
+      background:
+        radial-gradient(ellipse 100% 80% at 50% 20%, rgba(26,166,183,.08), transparent 55%),
+        radial-gradient(ellipse 80% 50% at 80% 80%, rgba(59,130,246,.05), transparent 50%),
+        rgba(250,252,253,.95);
+    }
+    .about-grid{
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      text-align: center;
+    }
+    .about-heading{
+      position: static;
+    }
+    .about-content{
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      width: 100%;
+      text-align: center;
     }
     .about .blurb{
-      max-width: 86ch;
-      margin: 0 auto 20px;
+      margin: 0 0 20px;
       color: var(--muted);
       font-size:16px;
+      line-height: 1.7;
+      overflow-wrap: break-word;
     }
     .about .blurb:last-child{
       margin-bottom: 0;
     }
 
-    /* SERVICES (industry tabs + icon row + bullet list) */
+    /* SERVICES */
     .services{
       background: rgba(255,255,255,.55);
     }
@@ -366,8 +442,8 @@
 
     .service-cards{
       display:grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
       align-items: stretch;
       margin-top: 18px;
     }
@@ -376,22 +452,68 @@
       border: 1px solid rgba(17,24,39,.10);
       background: rgba(255,255,255,.88);
       border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 12px 26px rgba(17,24,39,.06);
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
       display:flex;
       flex-direction: column;
       gap: 0;
       align-items: center;
-      text-align:center;
-      min-height: 190px;
-      transition: transform .10s ease, box-shadow .10s ease, border-color .10s ease;
+      text-align: center;
+      min-height: 160px;
+      transition: all 0.2s ease;
     }
     .svc:hover{
       transform: translateY(-2px);
-      box-shadow: 0 16px 34px rgba(17,24,39,.09);
-      border-color: rgba(26,166,183,.22);
+      box-shadow: 0 14px 32px rgba(0,0,0,0.08);
+      border-color: rgba(26,166,183,.3);
     }
     .svc:active{ transform: translateY(0); } /* Better touch feedback on mobile */
+    .svc strong{
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .wave-divider{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 2px 0 6px;
+      width: 100%;
+      line-height: 0;
+    }
+    .wave-divider svg{
+      display: block;
+      width: 260px;
+      max-width: none;
+      min-width: 200px;
+      height: 16px;
+    }
+    /* Service card title–wave spacing: high-specificity overrides so wave sits just under title */
+    #services .service-cards .svc{
+      gap: 0 !important;
+    }
+    #services .service-cards .svc strong{
+      font-size: 19px;
+      margin: 0 0 0 !important;
+      padding-bottom: 0;
+      line-height: 1.2;
+    }
+    #services .service-cards .svc .wave-divider{
+      margin-top: 4px !important;
+      margin-bottom: 6px !important;
+    }
+    #services .service-cards .svc span + span{
+      margin-top: 10px;
+    }
+    .svc span{
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+      margin-top: 0;
+      max-width: 480px;
+      overflow-wrap: break-word;
+    }
 
     /* Video cards - clickable, simplified design */
     .svc-video {
@@ -423,14 +545,14 @@
 
     .svc strong{
       display:block;
-      font-size: 15px;
+      font-size: 17px;
       margin-top: 0;
     }
     .svc span{
       color: var(--muted2);
       font-size: 15px;
       line-height: 1.5;
-      margin-top: 8px;
+      margin-top: 0;
     }
 
     /* Video Modal */
@@ -586,16 +708,16 @@
       background: transparent;
     }
     .contact-shell{
-      width: min(600px, 100%);
+      width: min(720px, 100%);
       margin: 24px auto 0;
       border: 1px solid rgba(17,24,39,.08);
       background: rgba(255,255,255,.95);
       border-radius: var(--radius);
-      box-shadow: var(--shadow2);
-      padding: 24px;
+      box-shadow: var(--shadow-elevated);
+      padding: 32px;
       backdrop-filter: blur(10px);
     }
-    .contact-form{ display:grid; gap: 8px; }
+    .contact-form{ display:grid; gap: 10px; }
     .contact-form .btn{
       justify-self: center;
       margin-top: 4px;
@@ -612,14 +734,6 @@
       font-size: 16px;
       min-height: 44px;
       box-sizing: border-box;
-    }
-    input::placeholder, textarea::placeholder{
-      color: var(--muted2);
-      opacity: 1;
-    }
-    input:focus::placeholder, textarea:focus::placeholder{
-      opacity: 0;
-      transition: opacity 0.2s ease;
     }
     input:focus, textarea:focus, select:focus{
       outline:none;
@@ -665,30 +779,86 @@
       border-color: rgba(17,24,39,.08);
     }
 
-    /* DROPDOWN CONTAINER (now in hero) */
-    .dropdown-container{
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 20px;
-      align-items: end;
+    /* SECTOR CARDS */
+    .sector-cards-container{
       max-width: 900px;
       margin: 48px auto 0;
-      padding: 0;
       width: 100%;
-      position: relative;
     }
-    .dropdown-group{
+    .hero-instruction{
+      font-size: 15px;
+      color: #4b5563;
+      font-weight: 500;
+      text-align: center;
+      margin: 0 0 20px;
+      opacity: 0;
+      transform: translateY(-5px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .hero-instruction.visible{
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .objective-instruction{
+      margin-bottom: 12px;
+    }
+    .sector-cards-grid{
       display: grid;
-      gap: 8px;
-      min-width: 0;
-      width: 100%;
-      overflow: hidden;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
     }
-    .dropdown-group select{
+    .sector-card{
+      border-radius: 14px;
+      padding: 18px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--text);
+    }
+    .sector-card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(0,0,0,0.08);
+      border-color: rgba(26,166,183,.3);
+    }
+    .sector-card.selected{
+      background: linear-gradient(135deg, rgba(26,166,183,.08), rgba(59,130,246,.08));
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(26,166,183,.15);
+    }
+    .sector-card:active{
+      transform: translateY(0);
+    }
+    
+    /* Objective dropdown (shown after sector selection) */
+    .objective-step{
+      max-width: 500px;
+      margin: 0 auto;
+      display: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .objective-step.active{
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .objective-step label{
+      display: block;
+      font-size: 14px;
+      color: var(--muted2);
+      font-weight: 500;
+      margin-bottom: 8px;
+      text-align: left;
+    }
+    .objective-step select{
       width: 100%;
-      min-width: 280px; /* Based on longest option text to prevent resizing */
-      max-width: 100%;
-      box-sizing: border-box;
       padding: 14px 16px;
       border-radius: var(--radius-sm);
       border: 1px solid rgba(17,24,39,.14);
@@ -697,15 +867,62 @@
       font-size: 16px;
       min-height: 48px;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s ease;
       font-weight: 500;
     }
-    .dropdown-group label{
-      font-size: 12px;
-      color: var(--muted2);
-      font-weight: 500;
-      text-align: left;
+    .objective-step select:disabled{
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: rgba(245,247,251,.8);
     }
+    
+    /* Recommendation Panel */
+    .recommendation-panel{
+      max-width: 720px;
+      margin: 24px auto 0;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.25s ease;
+      pointer-events: none;
+    }
+    .recommendation-panel.visible{
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .recommendation-panel.hidden{
+      display: none;
+    }
+    .recommendation-title{
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0 0 10px;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .recommendation-text{
+      font-size: 16px;
+      color: #4b5563;
+      line-height: 1.6;
+      margin: 0 0 24px;
+    }
+    .recommendation-cta{
+      display: inline-block;
+      margin-top: 8px;
+      opacity: 0;
+      transform: translateY(5px);
+      transition: opacity 0.25s ease 0.1s, transform 0.25s ease 0.1s;
+    }
+    .recommendation-panel.visible .recommendation-cta{
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
     .sr-only{
       position: absolute;
       width: 1px;
@@ -921,28 +1138,26 @@
 
     /* RESPONSIVE */
     @media (max-width: 980px){
-      section{ padding: 64px 0; }
-      .hero-copy h1{ font-size: 42px; }
-      .section-title{ font-size: 28px; }
+      .hero-copy h1{ font-size: 38px; }
       .service-cards{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .why-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .process-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .bullets{ grid-template-columns: 1fr; }
       .brand{ min-width: unset; }
       .hero-band{ background-position: center; }
-      .dropdown-container{
-        gap: 16px;
-        margin-top: 40px;
-      }
-      .results-content{
-        padding: 28px 24px;
-        margin-top: 24px;
-      }
+    }
+    @media (max-width: 768px){
+      .service-cards{ grid-template-columns: 1fr; gap: 16px; }
+      .why-grid{ grid-template-columns: 1fr; }
+      .process-grid{ grid-template-columns: 1fr; }
     }
 
     @media (max-width: 560px){
       .container{ width: calc(100% - 28px); }
       section{ padding: 52px 0; }
+      .section-title{
+        font-size: clamp(22px, 5.5vw, 32px);
+      }
       .menu-toggle{
         display:flex;
       }
@@ -986,39 +1201,65 @@
       .nav{
         position:relative;
       }
-      /* Hide "Get in touch" button in header on mobile - available in menu */
-      header .btn.primary{
-        display: none;
-      }
-      /* Shorten brand text on mobile - hide tagline */
-      .brand-title span{
+      /* Hide "Get in touch" button on mobile - available in menu */
+      .btn.primary{
         display: none;
       }
       .brand{
         min-width: unset;
       }
+      .brand{
+        padding: 6px 0;
+      }
+      .logo img,
+      .site-logo img{
+        height: 42px; /* Slightly smaller on mobile */
+      }
 
       .hero-band{
-        min-height: auto; /* Let content determine height */
+        min-height: 320px; /* Reduced from 380px for better mobile UX */
         background: var(--surface);
       }
-      .hero-inner{ padding: 48px 0 40px; }
+      .hero-inner{
+        padding: 36px 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
       .hero-copy{ 
-        padding: 0 12px; 
+        padding: 0 8px; 
         text-align: center;
       }
       .hero-copy h1{ 
-        font-size: 36px; 
-        line-height: 1.15;
-        margin-bottom: 14px;
-        letter-spacing: -0.5px;
+        font-size: clamp(36px, 8vw, 64px);
+        line-height: 1.2;
+        margin-bottom: 12px;
+      }
+      .hero-copy .hero-subheading{
+        font-size: clamp(16px, 4vw, 20px);
       }
       .hero-copy p{
-        font-size: 16px;
-        line-height: 1.6;
+        font-size: 15px;
+        line-height: 1.5;
         margin-left: auto;
         margin-right: auto;
-        margin-bottom: 16px;
+      }
+      .sector-cards-grid{
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .sector-card{
+        padding: 16px;
+        font-size: 14px;
+      }
+      .about-grid{
+        gap: 24px;
+      }
+      .about-heading{
+        position: static;
+      }
+      .service-cards{
+        grid-template-columns: 1fr;
+        gap: 16px;
       }
       .hero-cta{
         flex-direction: column;
@@ -1041,11 +1282,26 @@
       }
       /* Compact service cards on mobile - hide description, show only icon + heading */
       .svc{
-        padding: 12px;
+        padding: 20px 16px;
         min-height: auto;
+        align-items: center;
+        text-align: center;
+      }
+      .svc strong{
+        margin-bottom: 4px;
+      }
+      .wave-divider{
+        margin: 2px 0 6px;
+      }
+      .wave-divider svg{
+        width: min(240px, 80%);
+        max-width: none;
+        min-width: 170px;
       }
       .svc span{
-        display: none; /* Hide description text on mobile for compact layout */
+        margin-top: 0;
+        max-width: 100%;
+        overflow-wrap: break-word;
       }
       .why-grid{ grid-template-columns: 1fr; }
       .why-card{
@@ -1085,66 +1341,47 @@
       .contact-shell{
         width: 100%;
         padding: 24px 20px; /* Optimized padding */
-        margin-top: 20px;
-      }
-      .contact-form{
-        gap: 12px;
       }
       .form-row{
-        gap: 6px; /* Better spacing between form fields */
-      }
-      .form-row label{
-        font-size: 11px;
-      }
-      input, textarea{
-        padding: 12px 14px;
-        font-size: 16px; /* Prevents iOS zoom */
-      }
-      .contact-form .btn{
-        margin-top: 8px;
-        width: 100%;
-        max-width: 280px;
+        gap: 8px; /* Better spacing between form fields */
       }
       .dropdown-container{
         grid-template-columns: 1fr;
-        gap: 16px;
+        gap: 20px;
         padding: 0;
-        margin-top: 40px;
-      }
-      .dropdown-group{
-        width: 100%;
-      }
-      .dropdown-group label{
-        font-size: 10px;
-        margin-bottom: 6px;
+        margin-top: 32px;
       }
       .dropdown-group select{
-        min-width: 0;
-        width: 100%;
-        padding: 12px 14px;
+        min-width: 0; /* Allow full width on mobile */
+      }
+      .recommendation-panel{
+        padding: 20px;
+        margin-top: 20px;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      .objective-step{
+        max-width: 100%;
+        padding: 0 8px;
+      }
+      .recommendation-title{
+        font-size: 18px;
+      }
+      .recommendation-text{
         font-size: 15px;
-        min-height: 44px;
+      }
+      .recommendation-cta{
+        width: 100%;
+        max-width: 100%;
+        text-align: center;
       }
       .results-content{
-        padding: 24px 20px;
+        padding: 24px;
         text-align: center;
-        margin-top: 28px;
       }
       .results-content .section-title{
-        font-size: 22px;
+        font-size: 20px;
         text-align: center;
-        margin-bottom: 18px;
-        line-height: 1.3;
-      }
-      .results-content p{
-        font-size: 15px;
-        line-height: 1.65;
-        margin-bottom: 16px;
-      }
-      .results-content .btn{
-        margin-top: 24px;
-        width: 100%;
-        max-width: 280px;
       }
       /* Video modal - mobile: Keep vertical, centered modal */
       .video-modal {
@@ -1171,40 +1408,19 @@
       }
       /* General mobile spacing improvements */
       section{
-        padding: 48px 0; /* Better spacing for mobile */
-      }
-      .section-title{
-        font-size: 24px;
-        margin-bottom: 14px;
-      }
-      .section-sub{
-        font-size: 15px;
-        line-height: 1.6;
-        margin-bottom: 24px;
-      }
-      .about .blurb{
-        font-size: 16px;
-        line-height: 1.65;
-        margin-bottom: 20px;
+        padding: 40px 0; /* Reduced from 52px for better mobile UX */
       }
       .why-card{
-        padding: 18px; /* Better padding for mobile */
+        padding: 16px; /* Reduced from 20px for mobile */
+      }
+      /* Improve text readability on mobile */
+      .section-sub{
+        font-size: 15px;
+        line-height: 1.5;
       }
       .why-card p{
         font-size: 14px;
-        line-height: 1.55;
-      }
-      .contact-shell{
-        margin-top: 20px;
-      }
-      footer{
-        padding: 20px 0;
-        font-size: 11px;
-      }
-      .footer-row{
-        flex-direction: column;
-        gap: 12px;
-        text-align: center;
+        line-height: 1.5;
       }
     }
 
@@ -1227,6 +1443,18 @@
       opacity: 1;
       transform: translateY(0);
     }
+    
+    /* Scroll animations */
+    @keyframes fadeInUp{
+      from{
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to{
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 
@@ -1234,15 +1462,11 @@
 <header>
   <div class="container">
     <div class="nav">
-      <div class="brand">
-        <div class="logo">
-          <img src="assets/images/logos/logo-only.svg" alt="Driftline Learning Design logo" width="38" height="38" />
+      <a href="/" class="brand">
+        <div class="logo site-logo">
+          <img src="assets/logo.svg" alt="Driftline Learning Design" />
         </div>
-        <div class="brand-title">
-          <strong>Driftline Learning Design</strong>
-          <span>Designing direction</span>
-        </div>
-      </div>
+      </a>
 
       <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
         <span></span>
@@ -1253,7 +1477,9 @@
       <nav id="main-nav" aria-label="Primary" aria-expanded="false">
         <ul>
           <li><a href="#interactive-content">Get Started</a></li>
+          <li><a href="#services">Services</a></li>
           <li><a href="#about">About</a></li>
+        
           <li><a href="#contact">Work With Us</a></li>
         </ul>
       </nav>
@@ -1269,40 +1495,48 @@
     <div class="hero-band">
       <div class="hero-inner">
         <div class="hero-copy">
-          <h1>Driftline Learning Design</h1>
-          <p>
-            <strong>Designing direction</strong>
+          <h1>Learning Design for Complex Education Projects</h1>
+          <p class="hero-subheading">
+            Strategy, course architecture, and development for universities, training providers, and professional organisations.
           </p>
-          <p>
-            Driftline is a boutique learning design practice specialising in custom course design and development.
-          </p>
-          <p>
-            We turn subject matter expertise into structured learning experiences that drive performance, compliance, and growth.
-          </p>
+         
           
-          <div class="dropdown-container">
-            <div class="dropdown-group">
-              <label for="sector-select">Select your sector</label>
-              <select id="sector-select" aria-describedby="sector-description">
+          <div class="sector-cards-container">
+            <p class="hero-instruction" id="sector-instruction">Select your sector</p>
+            <div class="sector-cards-grid" id="sector-cards">
+              <button class="sector-card" data-sector="higher-education" type="button" aria-label="Select Higher Education">
+                Higher Education
+              </button>
+              <button class="sector-card" data-sector="vet-rtos" type="button" aria-label="Select VET & RTOs">
+                VET & RTOs
+              </button>
+              <button class="sector-card" data-sector="professional-associations" type="button" aria-label="Select Professional Associations">
+                Professional Associations
+              </button>
+              <button class="sector-card" data-sector="corporate" type="button" aria-label="Select Corporate">
+                Corporate
+              </button>
+              <button class="sector-card" data-sector="small-businesses" type="button" aria-label="Select Small Business">
+                Small Business
+              </button>
+        </div>
+
+            <div class="objective-step" id="objective-step">
+              <p class="hero-instruction objective-instruction" id="objective-instruction" style="display: none;">What are you trying to achieve?</p>
+              <select id="objective-select" disabled aria-describedby="objective-description" aria-disabled="true">
                 <option value="">Choose...</option>
-                <option value="higher-education">Higher Education</option>
-                <option value="vet-rtos">VET & RTOs</option>
-                <option value="professional-associations">Professional Associations</option>
-                <option value="small-businesses">Small Businesses</option>
-                <option value="corporate">Corporate</option>
-              </select>
-              <span id="sector-description" class="sr-only">Select your sector to see available objectives</span>
-            </div>
-            
-            <div class="dropdown-group">
-              <label for="objective-select">What are you trying to achieve?</label>
-              <select id="objective-select" disabled aria-describedby="objective-description">
-                <option value="">Select sector first</option>
               </select>
               <span id="objective-description" class="sr-only">Results will appear automatically when you select an objective</span>
             </div>
-          </div>
-          
+
+            <!-- Recommendation Panel -->
+            <div id="recommendation-panel" class="recommendation-panel hidden" aria-live="polite" role="region" aria-label="Recommendation">
+              <h3 class="recommendation-title" id="recommendation-title"></h3>
+              <p class="recommendation-text" id="recommendation-text"></p>
+              <a href="#contact" class="btn primary recommendation-cta">Enquire now</a>
+            </div>
+            </div>
+
           <div id="results-area" class="results-container" style="display:none;" aria-live="polite" aria-atomic="true" role="region" aria-label="Results">
             <div class="results-content">
               <h2 id="results-title" class="section-title"></h2>
@@ -1314,27 +1548,150 @@
     </div>
   </section>
 
+  <!-- SERVICES -->
+  <section id="services" class="services fade-in">
+    <div class="container">
+      <h2 class="section-title center">What Driftline Does</h2>
+      <div class="service-cards">
+        <div class="svc">
+          <strong>Learning Strategy</strong>
+          <div class="wave-divider" aria-hidden="true">
+            <svg viewBox="280 160 840 80" preserveAspectRatio="xMidYMid meet" class="wave-svg">
+              <defs>
+                <linearGradient id="waveFade1" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#F5A23A" stop-opacity="0"/>
+                  <stop offset="12%" stop-color="#F5A23A" stop-opacity="1"/>
+                  <stop offset="88%" stop-color="#F5A23A" stop-opacity="1"/>
+                  <stop offset="100%" stop-color="#F5A23A" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path
+                d="M280 195
+                   C373 170 467 170 560 195
+                   C653 220 747 220 840 195
+                   C933 170 1027 170 1120 195"
+                fill="none"
+                stroke="url(#waveFade1)"
+                stroke-width="8"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <span>Strong courses begin with clear direction. Before development starts, the structure of the learning needs to be defined — outcomes, progression, delivery model, and assessment approach.</span>
+          <span>Driftline works with organisations to translate expertise into a practical learning framework that guides development and supports confident delivery.</span>
+        </div>
+        <div class="svc">
+          <strong>Course & Subject Design</strong>
+          <div class="wave-divider" aria-hidden="true">
+            <svg viewBox="280 160 840 80" preserveAspectRatio="xMidYMid meet" class="wave-svg">
+              <defs>
+                <linearGradient id="waveFade2" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#F5A23A" stop-opacity="0"/>
+                  <stop offset="12%" stop-color="#F5A23A" stop-opacity="1"/>
+                  <stop offset="88%" stop-color="#F5A23A" stop-opacity="1"/>
+                  <stop offset="100%" stop-color="#F5A23A" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path
+                d="M280 195
+                   C373 170 467 170 560 195
+                   C653 220 747 220 840 195
+                   C933 170 1027 170 1120 195"
+                fill="none"
+                stroke="url(#waveFade2)"
+                stroke-width="8"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <span>Design turns expertise into a coherent learning experience. Courses need clear structure, purposeful learning activities, and assessment that supports genuine understanding.</span>
+          <span>Driftline designs subjects and courses that are logically structured, easy to navigate, and aligned to the outcomes they are intended to achieve.</span>
+        </div>
+        <div class="svc">
+          <strong>Course Review & Redesign</strong>
+          <div class="wave-divider" aria-hidden="true">
+            <svg viewBox="280 160 840 80" preserveAspectRatio="xMidYMid meet" class="wave-svg">
+              <defs>
+                <linearGradient id="waveFade3" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#F5A23A" stop-opacity="0"/>
+                  <stop offset="12%" stop-color="#F5A23A" stop-opacity="1"/>
+                  <stop offset="88%" stop-color="#F5A23A" stop-opacity="1"/>
+                  <stop offset="100%" stop-color="#F5A23A" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path
+                d="M280 195
+                   C373 170 467 170 560 195
+                   C653 220 747 220 840 195
+                   C933 170 1027 170 1120 195"
+                fill="none"
+                stroke="url(#waveFade3)"
+                stroke-width="8"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <span>Courses naturally evolve over time. Content grows, assessment shifts, and structure can become less visible to learners.</span>
+          <span>Driftline reviews existing courses and programs to clarify structure, strengthen alignment, and redesign elements that no longer support effective learning.</span>
+        </div>
+        <div class="svc">
+          <strong>Digital Learning Development</strong>
+          <div class="wave-divider" aria-hidden="true">
+            <svg viewBox="280 160 840 80" preserveAspectRatio="xMidYMid meet" class="wave-svg">
+              <defs>
+                <linearGradient id="waveFade4" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#F5A23A" stop-opacity="0"/>
+                  <stop offset="12%" stop-color="#F5A23A" stop-opacity="1"/>
+                  <stop offset="88%" stop-color="#F5A23A" stop-opacity="1"/>
+                  <stop offset="100%" stop-color="#F5A23A" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path
+                d="M280 195
+                   C373 170 467 170 560 195
+                   C653 220 747 220 840 195
+                   C933 170 1027 170 1120 195"
+                fill="none"
+                stroke="url(#waveFade4)"
+                stroke-width="8"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <span>Digital courses require more than simply placing materials online. Structure, navigation, and interaction need to work clearly within the platform where the learning takes place.</span>
+          <span>Driftline builds structured online learning experiences inside your LMS, ensuring courses function clearly and reliably for both learners and staff.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ABOUT DRIFTLINE -->
   <section id="about" class="about fade-in">
-    <div class="container center">
-      <h2 class="section-title">About Driftline</h2>
-      <p class="blurb">
-        Driftline was created to bridge the gap between expertise and execution.
-      </p>
-      <p class="blurb">
-        Many organisations have deep knowledge and capable people — but turning that knowledge into a structured learning experience requires careful planning and design judgement.
-      </p>
-      <p class="blurb">
-        Driftline works closely with clients to shape ideas into clear, purposeful learning. Projects are intentionally selective, allowing space for careful thinking, strong design decisions, and attention to detail.
-      </p>
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-heading">
+          <h2 class="section-title">About Driftline</h2>
+          </div>
+        <div class="about-content">
+          <p class="blurb">
+            Driftline was created to bridge the gap between expertise and execution.
+          </p>
+          <p class="blurb">
+            Many organisations have deep knowledge and capable people — but turning that knowledge into a structured learning experience requires careful planning and design judgement.
+          </p>
+          <p class="blurb">
+            Driftline works closely with clients to shape ideas into clear, purposeful learning. Projects are intentionally selective, allowing space for careful thinking, strong design decisions, and attention to detail.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- CONTACT -->
   <section id="contact" class="contact fade-in">
     <div class="container center">
-      <h2 class="section-title">Work With Us</h2>
-      <p class="section-sub">If you're reviewing a program, designing a new course, or strengthening delivery, let's talk.</p>
+      <h2 class="section-title">Start a Conversation</h2>
+      <p class="section-sub">Get in touch to discuss your project.</p>
 
       <div class="contact-shell">
         <form class="contact-form" name="contact" netlify netlify-honeypot="bot-field" onsubmit="return handleSubmit(event)">
@@ -1359,11 +1716,11 @@
             <textarea id="msg" name="msg" placeholder="Tell us about your project..." required></textarea>
           </div>
 
-          <button class="btn primary" type="submit" id="submit-btn">Send message</button>
+          <button class="btn primary" type="submit" id="submit-btn">Discuss your project</button>
           <div class="note" id="form-note"></div>
         </form>
 
-        <div class="note" style="text-align:center; margin-top:14px;">
+        <div class="note" style="text-align:center; margin-top:5px;">
           Or connect on <a href="https://www.linkedin.com/in/david-king-learning-designer/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
       </div>
@@ -1378,6 +1735,7 @@
       <div style="display:flex; gap:12px; flex-wrap:wrap;">
         <a href="#interactive-content">Get Started</a>
         <a href="#about">About</a>
+        <a href="#services">Services</a>
         <a href="#contact">Work With Us</a>
       </div>
     </div>
@@ -1466,7 +1824,7 @@
       note.className = 'note form-error';
     } finally {
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Send message';
+      submitBtn.textContent = 'Discuss your project';
     }
     
     return false;
@@ -1487,14 +1845,66 @@
     lastScroll = currentScroll;
   });
 
-  // Interactive dropdown functionality
-  const sectorSelect = document.getElementById('sector-select');
+  // Sector cards functionality
+  const sectorCards = document.querySelectorAll('.sector-card');
+  const sectorInstruction = document.getElementById('sector-instruction');
+  const objectiveStep = document.getElementById('objective-step');
+  const objectiveInstruction = document.getElementById('objective-instruction');
   const objectiveSelect = document.getElementById('objective-select');
   const resultsArea = document.getElementById('results-area');
   const resultsTitle = document.getElementById('results-title');
   const resultsText = document.getElementById('results-text');
   
-  // Width management removed - CSS handles sizing with min-width
+  let selectedSector = null;
+  
+  // Show sector instruction on load
+  setTimeout(() => {
+    sectorInstruction.classList.add('visible');
+  }, 300);
+  
+  // Handle sector card selection
+  sectorCards.forEach(card => {
+    card.addEventListener('click', () => {
+      // Remove selected class from all cards
+      sectorCards.forEach(c => c.classList.remove('selected'));
+      // Add selected class to clicked card
+      card.classList.add('selected');
+      selectedSector = card.dataset.sector;
+      
+      // Clear results and recommendation panel
+      resultsArea.style.display = 'none';
+      resultsTitle.textContent = '';
+      resultsText.innerHTML = '';
+      if (recommendationPanel) {
+        recommendationPanel.classList.remove('visible');
+        setTimeout(() => {
+          recommendationPanel.classList.add('hidden');
+        }, 250);
+      }
+      
+      // Show objective step and populate options
+      objectiveStep.classList.add('active');
+      objectiveInstruction.style.display = 'block';
+      setTimeout(() => {
+        objectiveInstruction.classList.add('visible');
+      }, 50);
+      
+      objectiveSelect.innerHTML = '<option value="">Choose...</option>';
+      
+      if (OBJECTIVES[selectedSector]) {
+        OBJECTIVES[selectedSector].forEach(obj => {
+          const option = document.createElement('option');
+          option.value = obj.value;
+          option.textContent = obj.label;
+          objectiveSelect.appendChild(option);
+        });
+      }
+      
+      objectiveSelect.disabled = false;
+      objectiveSelect.setAttribute('aria-disabled', 'false');
+      objectiveSelect.value = '';
+    });
+  });
 
   // Objectives for each sector
   const OBJECTIVES = {
@@ -1649,70 +2059,160 @@
     }
   };
 
-  // Handle sector selection
-  sectorSelect.addEventListener('change', (e) => {
-    const selectedSector = e.target.value;
-    
-    // Always clear results when sector changes
-    resultsArea.style.display = 'none';
-    resultsTitle.textContent = '';
-    resultsText.innerHTML = '';
-    
-    if (selectedSector) {
-      // Enable and populate objective dropdown
-      objectiveSelect.disabled = false;
-      objectiveSelect.setAttribute('aria-disabled', 'false');
-      objectiveSelect.innerHTML = '<option value="">Choose...</option>';
-      
-      OBJECTIVES[selectedSector].forEach(obj => {
-        const option = document.createElement('option');
-        option.value = obj.value;
-        option.textContent = obj.label;
-        objectiveSelect.appendChild(option);
-      });
-      
-      // Reset objective selection
-      objectiveSelect.value = '';
-    } else {
-      // Disable objective dropdown if no sector selected
-      objectiveSelect.disabled = true;
-      objectiveSelect.setAttribute('aria-disabled', 'true');
-      objectiveSelect.innerHTML = '<option value="">Select sector first</option>';
-    }
-  });
 
-  // Handle objective selection - automatically show results
+  // Recommendation panel elements
+  const recommendationPanel = document.getElementById('recommendation-panel');
+  const recommendationTitle = document.getElementById('recommendation-title');
+  const recommendationText = document.getElementById('recommendation-text');
+  
+  // Recommendation content mapping (simplified, consultative text)
+  const RECOMMENDATION_MAP = {
+    'higher-education': {
+      'launch-new-subject': {
+        title: 'You want to: Launch a new subject or program',
+        text: '<p>Launching a new subject or program is a significant academic and strategic step. While expertise and curriculum content may already exist, shaping that into a coherent learning experience requires careful sequencing, assessment planning, and delivery design.</p><p>Without a clear framework, development can move quickly into content production before structure has been properly defined.</p><p>Driftline works with academic teams to design the learning architecture first — clarifying outcomes, progression, assessment approach, and delivery model — so the subject or program is built with purpose from the outset.</p>'
+      },
+      'redesign-subject': {
+        title: 'You want to: Redesign a subject as part of a program review',
+        text: '<p>Program reviews often reveal subjects that have evolved over time. Content accumulates, assessment shifts, and structure can become less visible.</p><p>Redesign is not simply refinement — it is an opportunity to realign the subject to its intended outcomes and role within the program.</p><p>Driftline supports subject teams in clarifying structure, simplifying progression, and strengthening alignment so the subject feels purposeful, navigable, and academically sound.</p>'
+      },
+      'convert-online-blended': {
+        title: 'You want to: Convert a subject or program to fully online or blended delivery',
+        text: '<p>Moving to online or blended delivery involves more than transferring lectures and materials into a digital format.</p><p>Effective online learning requires deliberate structure, active engagement, and clear navigation. Without this, content can become dense and passive in digital form.</p><p>Driftline designs online and blended learning experiences that maintain academic integrity while supporting clarity, interaction, and student progression.</p>'
+      },
+      'rebuild-lms': {
+        title: 'You want to: Rebuild a subject within a new LMS',
+        text: '<p>A new LMS presents both a technical and structural opportunity. Simply migrating content often carries forward existing complexity or inconsistency.</p><p>Rebuilding allows the learning experience to be reconsidered — clarifying flow, simplifying navigation, and ensuring assessment and content align cleanly within the platform.</p><p>Driftline approaches LMS rebuilds as design work, not just migration — ensuring the subject functions as clearly as it reads.</p>'
+      },
+      'redesign-assessment': {
+        title: 'You want to: Redesign assessment across a subject or program',
+        text: '<p>Assessment shapes the learning experience more than any other element. When tasks evolve independently over time, alignment can weaken and expectations become less clear for students.</p><p>Redesigning assessment involves reconsidering progression, workload, criteria, and the relationship between tasks and intended outcomes.</p><p>Driftline works with academic teams to create coherent assessment frameworks that support learning, academic standards, and clarity for both staff and students.</p>'
+      },
+      'something-else': {
+        title: 'You want to: Something else',
+        text: '<p>Every institution operates within its own academic, operational, and regulatory context. If your situation does not fit neatly into the areas above, Driftline can work with you to clarify the challenge and determine the most appropriate course of action.</p>'
+      }
+    },
+    'vet-rtos': {
+      'develop-qualification': {
+        title: 'You want to: Develop a new qualification',
+        text: '<p>Introducing a new qualification involves more than unpacking the training package. While units define requirements, they do not determine how learning is structured, delivered, or assessed in practice.</p><p>Without careful design, development can move quickly into writing resources before the program framework has been clearly mapped.</p><p>Driftline works with RTOs to design a coherent delivery structure first — defining sequencing, assessment approach, delivery mode, and documentation — so the qualification is ready for confident delivery and regulatory scrutiny.</p>'
+      },
+      'rebuild-materials': {
+        title: 'You want to: Rebuild or strengthen training and assessment materials',
+        text: '<p>Over time, training and assessment materials evolve. Updates are made, units change, and delivery contexts shift. This can result in duplication, complexity, or inconsistent structure.</p><p>Rebuilding materials provides an opportunity to clarify progression, simplify delivery, and ensure assessment supports real skill development.</p><p>Driftline works with RTOs to create structured, streamlined materials that are practical for trainers and clear for learners, while remaining fully aligned to regulatory requirements.</p>'
+      },
+      'expand-online-blended': {
+        title: 'You want to: Expand delivery into online or blended formats',
+        text: '<p>Moving into online or blended delivery requires more than adapting existing materials. Delivery models influence assessment design, learner support, and evidence collection.</p><p>When structure is not reconsidered, online learning can become content-heavy or difficult to manage.</p><p>Driftline designs delivery models that translate effectively into digital or blended environments, ensuring clarity for learners and confidence for trainers.</p>'
+      },
+      'redevelop-assessment': {
+        title: 'You want to: Redevelop assessment tools',
+        text: '<p>Assessment is central to compliance and skill validation. When tools are amended over time or adapted informally, clarity and consistency can weaken.</p><p>Redevelopment involves reviewing alignment to units, evidence requirements, and practicality of delivery — not simply rewriting documents.</p><p>Driftline works with RTOs to create assessment tools that are structured, manageable, and aligned to both regulatory standards and workplace application.</p>'
+      },
+      'prepare-audit': {
+        title: 'You want to: Prepare for audit or validation',
+        text: '<p>Audit and validation cycles place significant pressure on documentation and assessment design. Often, organisations need an objective review to ensure materials reflect both compliance and sound educational structure.</p><p>Preparation is not just about filling gaps — it is about ensuring consistency, clarity, and defensible alignment across the program.</p><p>Driftline supports RTOs in reviewing, strengthening, and refining materials so they are organised, coherent, and ready for scrutiny.</p>'
+      },
+      'something-else': {
+        title: 'You want to: Something else',
+        text: '<p>Every RTO operates within its own delivery model, industry context, and regulatory environment. If your situation does not fit the areas above, Driftline can work with you to clarify the scope and design a practical path forward.</p>'
+      }
+    },
+    'professional-associations': {
+      'develop-cpd': {
+        title: 'You want to: Develop a CPD course or program',
+        text: '<p>Professional expertise is often shared through events, webinars, or standalone sessions. Turning that expertise into a structured CPD course requires deliberate sequencing, clear outcomes, and meaningful application.</p><p>Without structure, CPD can feel episodic rather than developmental.</p><p>Driftline works with associations to shape expertise into coherent CPD programs — designed to support professional growth, practical application, and member confidence.</p>'
+      },
+      'launch-microcredential': {
+        title: 'You want to: Launch a micro-credential',
+        text: '<p>A micro-credential signals credibility and defined capability. To hold its value, it requires clarity of scope, structured progression, and assessment that reflects professional standards.</p><p>Designing a micro-credential involves more than packaging content — it requires careful definition of outcomes, learning experience, and recognition criteria.</p><p>Driftline supports associations in designing micro-credentials that are purposeful, structured, and aligned to the expectations of members and industry.</p>'
+      },
+      'structure-pathway': {
+        title: 'You want to: Structure our CPD offerings into a formal learning pathway',
+        text: '<p>Many associations have rich learning resources, but without a clear pathway, members may struggle to see progression or depth.</p><p>Structuring CPD into a formal pathway involves defining stages, sequencing content, and clarifying how learning builds over time.</p><p>Driftline works with associations to design cohesive learning journeys that connect existing expertise into a clear and valuable professional development framework.</p>'
+      },
+      'something-else': {
+        title: 'You want to: Something else',
+        text: '<p>Every association has its own membership model, professional standards, and strategic priorities. If your objectives extend beyond the areas listed above, Driftline can work with you to clarify the scope and design a structured approach aligned to your organisation\'s goals.</p>'
+      }
+    },
+    'small-businesses': {
+      'launch-online-course': {
+        title: 'You want to: Launch an online course',
+        text: '<p>Launching an online course is a significant investment. While expertise may be clear, turning that knowledge into a structured learning experience requires careful planning before production begins.</p><p>Without a defined framework, courses can become content-heavy or difficult for learners to navigate.</p><p>Driftline works with small businesses to shape online courses around clear outcomes, practical learning design, and delivery decisions that support both credibility and growth.</p>'
+      },
+      'develop-staff-training': {
+        title: 'You want to: Develop staff training resources',
+        text: '<p>As teams grow, informal knowledge transfer often needs to become structured training. Simply documenting processes is rarely enough to support consistent performance.</p><p>Effective staff training requires clarity of expectations, purposeful sequencing, and learning activities that reinforce application.</p><p>Driftline supports businesses in developing structured training programs that strengthen capability and support operational consistency.</p>'
+      },
+      'redesign-mobile': {
+        title: 'You want to: Redesign existing training for mobile-first delivery',
+        text: '<p>Mobile access requires more than reformatting content. Learning design, navigation, and interaction need to be reconsidered to ensure clarity and usability on smaller devices.</p><p>When structure is not adapted, training can feel compressed or difficult to follow.</p><p>Driftline redesigns existing training for mobile-first delivery — simplifying structure, refining flow, and ensuring the experience works effectively across devices.</p>'
+      },
+      'something-else': {
+        title: 'You want to: Something else',
+        text: '<p>Every business has its own growth goals, operational context, and learning needs. If your objective sits outside the areas listed above, Driftline can work with you to clarify the scope and design a structured path forward.</p>'
+      }
+    },
+    'corporate': {
+      'restructure-onboarding': {
+        title: 'You want to: Restructure or improve our onboarding program',
+        text: '<p>Onboarding shapes early performance and long-term retention. As organisations grow or evolve, onboarding programs can become inconsistent, content-heavy, or difficult to scale.</p><p>Restructuring onboarding is an opportunity to clarify expectations, streamline learning, and ensure new staff develop capability in a structured and timely way.</p><p>Driftline works with organisations to design onboarding programs that are clear, practical, and aligned to operational priorities.</p>'
+      },
+      'redesign-mobile': {
+        title: 'You want to: Redesign existing training for mobile-first delivery',
+        text: '<p>Mobile access requires more than formatting adjustments. Content structure, interaction design, and user flow need to support clarity across devices.</p><p>Without deliberate redesign, training can become fragmented or difficult to navigate on mobile platforms.</p><p>Driftline redesigns training for mobile-first delivery — refining structure and simplifying learning so it remains effective and accessible wherever it is used.</p>'
+      },
+      'redevelop-compliance': {
+        title: 'You want to: Redevelop compliance training',
+        text: '<p>Compliance training often evolves in response to regulatory change. Over time, materials can become dense or overly procedural, even when they meet formal requirements.</p><p>Redevelopment provides an opportunity to clarify expectations, strengthen relevance, and ensure staff understand both the "what" and the "why" of compliance.</p><p>Driftline designs compliance training that supports understanding, accountability, and organisational risk management.</p>'
+      },
+      'improve-impact': {
+        title: 'You want to: Improve measurable impact of training on performance',
+        text: '<p>When training is delivered consistently but performance outcomes remain unchanged, the issue is often structural rather than content-related.</p><p>Aligning learning to measurable business outcomes requires clarity of capability expectations, purposeful learning design, and assessment that reflects real application.</p><p>Driftline works with organisations to align training more directly to performance objectives — ensuring learning investment supports operational results.</p>'
+      },
+      'something-else': {
+        title: 'You want to: Something else',
+        text: '<p>Every organisation operates within its own strategic, regulatory, and operational context. If your objective extends beyond the areas listed above, Driftline can work with you to clarify the scope and design a structured approach aligned to your business priorities.</p>'
+      }
+    }
+  };
+  
+  // Handle objective selection - show recommendation panel
   objectiveSelect.addEventListener('change', (e) => {
-    const selectedSector = sectorSelect.value;
     const selectedObjective = e.target.value;
     
-    if (selectedSector && selectedObjective) {
-      const content = CONTENT_MAP[selectedSector] && CONTENT_MAP[selectedSector][selectedObjective];
+    if (selectedObjective && selectedSector) {
+      const recommendation = RECOMMENDATION_MAP[selectedSector] && RECOMMENDATION_MAP[selectedSector][selectedObjective];
       
-      if (content) {
-        // Display content immediately
-        resultsTitle.textContent = content.title;
-        resultsText.innerHTML = content.content + '<div style="margin-top: 32px;"><a href="#contact" class="btn primary">Enquire now</a></div>';
-        resultsArea.style.display = 'block';
+      if (recommendation) {
+        // Populate recommendation panel
+        recommendationTitle.textContent = recommendation.title;
+        recommendationText.innerHTML = recommendation.text;
         
-        // Scroll to results with better mobile handling
+        // Show panel with animation
+        recommendationPanel.classList.remove('hidden');
+        // Trigger animation
         setTimeout(() => {
-          const isMobile = window.innerWidth <= 768;
-          resultsArea.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: isMobile ? 'start' : 'nearest' 
-          });
-        }, 50);
+          recommendationPanel.classList.add('visible');
+        }, 10);
+        
+        // Hide old results area if it exists
+        resultsArea.style.display = 'none';
       } else {
-        // Error handling for missing content
-        resultsTitle.textContent = 'Content unavailable';
-        resultsText.innerHTML = '<p>We apologize, but the requested content is currently unavailable. Please try selecting a different option or contact us directly.</p>';
-        resultsArea.style.display = 'block';
+        // Hide panel if no recommendation found
+        recommendationPanel.classList.remove('visible');
+        setTimeout(() => {
+          recommendationPanel.classList.add('hidden');
+        }, 250);
       }
     } else {
-      resultsArea.style.display = 'none';
-      resultsTitle.textContent = '';
-      resultsText.innerHTML = '';
+      // Hide panel if no selection (user cleared dropdown)
+      recommendationPanel.classList.remove('visible');
+      setTimeout(() => {
+        recommendationPanel.classList.add('hidden');
+      }, 250);
     }
   });
 
@@ -1732,19 +2232,6 @@
   
   document.querySelectorAll('.fade-in').forEach(el => {
     observer.observe(el);
-  });
-
-  // Ensure placeholders disappear on focus
-  const formInputs = document.querySelectorAll('input, textarea');
-  formInputs.forEach(input => {
-    input.addEventListener('focus', function() {
-      this.setAttribute('data-focused', 'true');
-    });
-    input.addEventListener('blur', function() {
-      if (!this.value) {
-        this.removeAttribute('data-focused');
-      }
-    });
   });
 
   // Mobile menu toggle
