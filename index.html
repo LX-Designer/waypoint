@@ -960,6 +960,9 @@
       white-space: nowrap;
       border-width: 0;
     }
+    .hidden{
+      display: none !important;
+    }
     .results-container{
       max-width: 900px;
       margin: 32px auto 0;
@@ -1736,10 +1739,12 @@
       <p class="section-sub">Get in touch to discuss your project.</p>
 
       <div class="contact-shell">
-        <form class="contact-form" name="contact" netlify netlify-honeypot="bot-field" onsubmit="return handleSubmit(event)">
+        <form class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return handleSubmit(event)">
           <input type="hidden" name="form-name" value="contact" />
-          <p style="display:none;">
-            <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+          <p class="hidden">
+            <label>Don't fill this out if you're human:
+              <input name="bot-field">
+            </label>
           </p>
           <div class="form-row">
             <label for="name">Your name</label>
