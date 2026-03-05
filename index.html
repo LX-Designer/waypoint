@@ -143,19 +143,20 @@
     }
     .menu-toggle span{
       width:22px;
-      height:2px;
+      height:4px;
       background:var(--text);
       border-radius:2px;
       transition:transform .2s ease, opacity .2s ease;
+      transform-origin: center center;
     }
     .menu-toggle[aria-expanded="true"] span:nth-child(1){
-      transform:rotate(45deg) translate(6px, 6px);
+      transform: translateY(8px) rotate(45deg);
     }
     .menu-toggle[aria-expanded="true"] span:nth-child(2){
       opacity:0;
     }
     .menu-toggle[aria-expanded="true"] span:nth-child(3){
-      transform:rotate(-45deg) translate(6px, -6px);
+      transform: translateY(-8px) rotate(-45deg);
     }
     nav ul{
       list-style:none;
@@ -171,6 +172,8 @@
       align-items: center;
     }
     nav a:hover{ background:rgba(17,24,39,.06); color:var(--text); text-decoration:none; }
+    .nav-cta-item{ display: none; }
+    .nav-cta-desktop{ display: inline-flex; }
 
     .btn{
       display:inline-flex; align-items:center; justify-content:center; gap:10px;
@@ -276,6 +279,7 @@
       max-width: 900px;
       margin: 0 auto;
       text-align: center;
+      width: 100%;
     }
 
     .hero-copy h1{
@@ -804,11 +808,27 @@
     }
     .sector-cards-grid{
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 16px;
       margin-bottom: 32px;
     }
+    @media (min-width: 1024px) {
+      .sector-cards-grid{
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .sector-cards-grid{
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    @media (max-width: 767px) {
+      .sector-cards-grid{
+        grid-template-columns: 1fr;
+      }
+    }
     .sector-card{
+      width: 100%;
+      min-height: 64px;
       border-radius: 14px;
       padding: 18px;
       background: white;
@@ -820,6 +840,9 @@
       font-weight: 500;
       font-size: 15px;
       color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .sector-card:hover{
       transform: translateY(-2px);
@@ -1181,275 +1204,75 @@
       .process-grid{ grid-template-columns: 1fr; }
     }
 
-    @media (max-width: 560px){
-      .container{ width: calc(100% - 28px); }
-      section{ padding: 52px 0; }
-      .section-title{
-        font-size: clamp(22px, 5.5vw, 32px);
-      }
-      .menu-toggle{
-        display:flex;
-      }
-      nav{
-        position:absolute;
-        top:100%;
-        left:0;
-        right:0;
-        background:rgba(245,247,251,.95);
-        backdrop-filter:blur(10px);
-        border-bottom:1px solid var(--border);
-        padding:12px 20px;
-        display:none;
-        box-shadow:0 4px 12px rgba(17,24,39,.08);
-      }
-      nav[aria-expanded="true"]{
-        display:block;
-      }
-      nav ul{
-        flex-direction:column;
-        gap:4px;
-        width:100%;
-      }
-      nav a{ 
-        padding: 14px 16px; 
+    /* Tablet: tighter nav spacing */
+    @media (min-width: 768px) and (max-width: 1023px) {
+      nav ul{ gap: 6px; }
+      nav a{ padding: 8px 8px; font-size: 13px; }
+    }
+
+    /* Mobile: hamburger menu and dropdown nav */
+    @media (max-width: 767px) {
+      .menu-toggle{ display: flex; }
+      .nav-cta-desktop{ display: none; }
+      .nav-cta-item{ display: list-item; }
+      .nav-cta-item .btn,
+      .nav-cta-item .btn.primary{
+        width: 100%;
+        justify-content: flex-start;
+        background: none;
+        border: none;
+        box-shadow: none;
+        color: var(--muted);
+        font-weight: 400;
         font-size: 15px;
+        padding: 14px 16px;
         min-height: 44px;
-        width:100%;
-        border-radius:10px;
+        transition: none;
       }
-      nav a:active{ 
-        background: rgba(17,24,39,.08); 
-        opacity: 0.9;
-      } /* Better touch feedback on mobile */
-      .btn{ 
-        padding: 14px 18px; 
-        border-radius: 13px;
-        min-height: 44px;
-        font-size: 14px;
-      }
-      .nav{
-        position:relative;
-      }
-      /* Hide header "Get in touch" button on mobile - available in menu */
-      .nav .btn.primary{
+      .nav-cta-item .btn::before{
         display: none;
       }
-      .brand{
-        min-width: unset;
+      .nav-cta-item .btn:hover,
+      .nav-cta-item .btn.primary:hover{
+        background: rgba(17,24,39,.06);
+        color: var(--text);
+        transform: none;
+        box-shadow: none;
       }
-      .brand{
-        padding: 6px 0;
+      .nav-cta-item .btn:active,
+      .nav-cta-item .btn.primary:active{
+        background: rgba(17,24,39,.08);
+        transform: none;
       }
-      .logo img,
-      .site-logo img{
-        height: 42px; /* Slightly smaller on mobile */
+      nav{
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 20px;
+        display: none;
+        box-shadow: 0 4px 12px rgba(17,24,39,.08);
       }
-
-      .hero-band{
-        min-height: 320px; /* Reduced from 380px for better mobile UX */
-        background: var(--surface);
-      }
-      .hero-inner{
-        padding: 36px 0;
-        width: 100%;
-        box-sizing: border-box;
-      }
-      .hero-copy{ 
-        padding: 0 8px; 
-        text-align: center;
-      }
-      .hero-copy h1{ 
-        font-size: clamp(36px, 8vw, 64px);
-        line-height: 1.2;
-        margin-bottom: 12px;
-      }
-      .hero-copy .hero-subheading{
-        font-size: clamp(16px, 4vw, 20px);
-      }
-      .hero-copy p{
+      nav[aria-expanded="true"]{ display: block; }
+      nav ul{ flex-direction: column; gap: 4px; width: 100%; }
+      nav a{
+        padding: 14px 16px;
         font-size: 15px;
-        line-height: 1.5;
-        margin-left: auto;
-        margin-right: auto;
-      }
-      .sector-cards-grid{
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-      .sector-card{
-        padding: 16px;
-        font-size: 14px;
-      }
-      .about-grid{
-        gap: 24px;
-      }
-      .about-heading{
-        position: static;
-      }
-      .service-cards{
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-      .hero-cta{
-        flex-direction: column;
-        gap: 10px;
+        min-height: 44px;
         width: 100%;
-        margin-top: 20px;
+        border-radius: 10px;
       }
-      .hero-cta .btn{
-        width: 100%;
-        justify-content: center;
-      }
-      .service-cards{ 
-        grid-template-columns: 1fr; 
-        gap: 10px;
-      }
-      .process-grid{ grid-template-columns: 1fr; }
-      .svc img, .why-card img{
-        width: 70px;
-        height: 70px;
-      }
-      /* Compact service cards on mobile - hide description, show only icon + heading */
-      .svc{
-        padding: 20px 16px;
-        min-height: auto;
-        align-items: center;
-        text-align: center;
-      }
-      .svc strong{
-        margin-bottom: 4px;
-      }
-      .wave-divider{
-        margin: 2px 0 6px;
-      }
-      .wave-divider svg{
-        width: min(240px, 80%);
-        max-width: none;
-        min-width: 170px;
-      }
-      .svc span{
-        margin-top: 0;
-        max-width: 100%;
-        overflow-wrap: break-word;
-      }
-      .why-grid{ grid-template-columns: 1fr; }
-      .why-card{
-        padding: 12px;
-        min-height: auto;
-      }
-      .why-card span{
-        display: none; /* Hide description text on mobile for compact layout */
-      }
-      /* Better tab wrapping on very small screens - maintain notepad style */
-      .industry-tabs{
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 8px 4px 0;
-        gap: 0;
-        margin-bottom: -1px;
-      }
-      .itab{
-        margin-right: 2px;
-        margin-bottom: 0;
-        padding: 12px 16px; /* Optimized padding */
-        font-size: 15px; /* Larger heading style for mobile */
-        font-weight: 700;
-        letter-spacing: 0.1px;
-        min-height: 48px;
-        border-radius: 6px 6px 0 0; /* Slightly smaller radius on mobile */
-      }
-      .itab[aria-selected="true"]{
-        margin-bottom: -1px; /* Maintain overlap on mobile */
-      }
+      nav a:active{ background: rgba(17,24,39,.08); opacity: 0.9; }
+      .nav{ position: relative; }
+      .brand{ min-width: unset; }
+      .hero-inner{ padding: 48px 0; }
+      .hero-copy{ padding: 0 16px; }
       input, textarea{
         font-size: 16px; /* Prevents iOS zoom on focus */
         min-height: 44px;
-        padding: 14px 12px; /* Better padding for mobile */
-      }
-      /* Form optimization for mobile */
-      .contact-shell{
-        width: 100%;
-        padding: 24px 20px; /* Optimized padding */
-      }
-      .form-row{
-        gap: 8px; /* Better spacing between form fields */
-      }
-      .dropdown-container{
-        grid-template-columns: 1fr;
-        gap: 20px;
-        padding: 0;
-        margin-top: 32px;
-      }
-      .dropdown-group select{
-        min-width: 0; /* Allow full width on mobile */
-      }
-      .recommendation-panel{
-        padding: 20px;
-        margin-top: 20px;
-        max-width: 100%;
-        box-sizing: border-box;
-      }
-      .objective-step{
-        max-width: 100%;
-        padding: 0 8px;
-      }
-      .recommendation-title{
-        font-size: 18px;
-      }
-      .recommendation-text{
-        font-size: 15px;
-      }
-      .recommendation-cta{
-        width: 100%;
-        max-width: 100%;
-        text-align: center;
-      }
-      .results-content{
-        padding: 24px;
-        text-align: center;
-      }
-      .results-content .section-title{
-        font-size: 20px;
-        text-align: center;
-      }
-      /* Video modal - mobile: Keep vertical, centered modal */
-      .video-modal {
-        padding: 10px;
-        align-items: center;
-      }
-      .video-modal-content {
-        max-width: 100%;
-        padding: 15px;
-        margin-top: 0;
-      }
-      .video-modal-iframe-container {
-        padding-bottom: 56.25%; /* Maintain 16:9 but smaller */
-        max-height: 50vh; /* Limit height so it stays vertical */
-      }
-      .video-modal-close {
-        top: 5px;
-        right: 5px;
-        width: 40px;
-        height: 40px;
-        font-size: 22px;
-        background: rgba(255, 255, 255, 0.95);
-        box-shadow: 0 2px 8px rgba(17, 24, 39, 0.2);
-      }
-      /* General mobile spacing improvements */
-      section{
-        padding: 40px 0; /* Reduced from 52px for better mobile UX */
-      }
-      .why-card{
-        padding: 16px; /* Reduced from 20px for mobile */
-      }
-      /* Improve text readability on mobile */
-      .section-sub{
-        font-size: 15px;
-        line-height: 1.5;
-      }
-      .why-card p{
-        font-size: 14px;
-        line-height: 1.5;
+        padding: 14px 12px;
       }
     }
 
@@ -1508,12 +1331,12 @@
           <li><a href="#interactive-content">Get Started</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="#about">About</a></li>
-        
           <li><a href="#contact">Work With Us</a></li>
+          <li class="nav-cta-item"><a class="btn primary" href="#contact">Get in touch</a></li>
         </ul>
       </nav>
 
-      <a class="btn primary" href="#contact">Get in touch</a>
+      <a class="btn primary nav-cta-desktop" href="#contact">Get in touch</a>
     </div>
   </div>
 </header>
@@ -1763,9 +1586,13 @@
             <textarea id="msg" name="msg" placeholder="Tell us about your project..." required></textarea>
           </div>
 
-          <button class="btn primary" type="submit" id="submit-btn">Discuss your project</button>
+          <button class="btn primary" type="submit" id="submit-btn">Send message</button>
           <div class="note" id="form-note"></div>
         </form>
+
+        <div class="note" style="text-align:center; margin-top:16px;">
+          Prefer email? <a href="mailto:hello@driftlinelearning.com">hello@driftlinelearning.com</a>
+        </div>
 
         <div class="note" style="text-align:center; margin-top:5px;">
           Or connect on <a href="https://www.linkedin.com/in/david-king-learning-designer/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
@@ -1871,7 +1698,7 @@
       note.className = 'note form-error';
     } finally {
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Discuss your project';
+      submitBtn.textContent = 'Send message';
     }
     
     return false;
