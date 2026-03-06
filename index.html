@@ -1743,10 +1743,7 @@
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const scrollBehavior = prefersReducedMotion ? 'auto' : 'smooth';
     const rect = container.getBoundingClientRect();
-    const isDesktop = window.matchMedia('(min-width: 768px)').matches;
-    const y = isDesktop
-      ? rect.top + window.pageYOffset - (window.innerHeight / 2) + (rect.height / 2)
-      : rect.top + window.pageYOffset - 90;
+    const y = rect.top + window.pageYOffset - (window.innerHeight / 2) + (rect.height / 2);
     window.scrollTo({ top: y, behavior: scrollBehavior });
 
     setTimeout(() => {
