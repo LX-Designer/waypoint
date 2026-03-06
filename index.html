@@ -799,8 +799,31 @@
       opacity: 1;
       transform: translateY(0);
     }
+    .hero-step-label{
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #7a8792;
+      font-weight: 600;
+      margin: 0 0 6px 0;
+    }
+    .objective-step .hero-step-label{
+      display: none;
+    }
+    .objective-step.active .hero-step-label{
+      display: inline-block;
+    }
+    .step-title{
+      font-size: 20px;
+      font-weight: 600;
+      color: #1f2a37;
+      line-height: 1.3;
+      margin-bottom: 18px;
+      text-align: center;
+    }
     .objective-instruction{
-      margin-bottom: 12px;
+      margin-bottom: 0;
     }
     .sector-cards-grid{
       display: grid;
@@ -1353,7 +1376,8 @@
          
           
           <div class="sector-cards-container">
-            <p class="hero-instruction" id="sector-instruction">Select your sector</p>
+            <p class="hero-step-label">Step 1</p>
+            <p class="hero-instruction step-title" id="sector-instruction">Select your sector</p>
             <div class="sector-cards-grid" id="sector-cards">
               <button class="sector-card" data-sector="higher-education" type="button" aria-label="Select Higher Education">
                 Higher Education
@@ -1373,7 +1397,8 @@
         </div>
 
             <div class="objective-step" id="objective-step">
-              <p class="hero-instruction objective-instruction" id="objective-instruction" style="display: none;">What are you trying to achieve?</p>
+              <p class="hero-step-label">Step 2</p>
+              <p class="hero-instruction objective-instruction step-title" id="objective-instruction" style="display: none;">Choose your goal</p>
               <select id="objective-select" disabled aria-describedby="objective-description" aria-disabled="true">
                 <option value="">Choose...</option>
               </select>
