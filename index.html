@@ -215,7 +215,8 @@
       height: 300px;
     }
     #submit-btn::before,
-    .nav-cta-desktop::before{
+    .nav-cta-desktop::before,
+    .recommendation-cta::before{
       display: none;
     }
     .btn:active{ transform: translateY(0); box-shadow: var(--shadow2); }
@@ -231,9 +232,6 @@
       box-shadow: 0 8px 24px rgba(26,166,183,.35);
       color: white;
       transform: translateY(-2px);
-    }
-    .btn{
-      transition: all 0.2s ease;
     }
 
     /* HERO (banner image background + HTML text) */
@@ -267,9 +265,6 @@
     .hero-inner{
       position: relative;
       z-index: 1;
-    }
-
-    .hero-inner{
       width:min(var(--max), calc(100% - 40px));
       margin:0 auto;
       padding: 80px 0;
@@ -851,7 +846,7 @@
       border-color: rgba(26,166,183,.3);
     }
     .sector-card.selected{
-      background: linear-gradient(135deg, rgba(26,166,183,.08), rgba(59,130,246,.08));
+      background: #e0f4f5;
       border-color: var(--accent);
       box-shadow: 0 8px 24px rgba(26,166,183,.15);
     }
@@ -867,6 +862,7 @@
       opacity: 0;
       transform: translateY(10px);
       transition: opacity 0.3s ease, transform 0.3s ease;
+      scroll-margin-top: 90px;
     }
     .objective-step.active{
       display: block;
@@ -913,11 +909,16 @@
       transform: translateY(10px);
       transition: all 0.25s ease;
       pointer-events: none;
+      scroll-margin-top: 90px;
     }
     .recommendation-panel.visible{
       opacity: 1;
       transform: translateY(0);
       pointer-events: auto;
+    }
+    .recommendation-panel:focus{
+      outline: none;
+      box-shadow: var(--focus);
     }
     .recommendation-panel.hidden{
       display: none;
@@ -1007,9 +1008,6 @@
         opacity: 1; 
         transform: translateY(0) scale(1); 
       }
-    }
-    @keyframes spin{
-      to{ transform: rotate(360deg); }
     }
     @keyframes spin{
       to{ transform: rotate(360deg); }
@@ -1383,7 +1381,7 @@
             </div>
 
             <!-- Recommendation Panel -->
-            <div id="recommendation-panel" class="recommendation-panel hidden" aria-live="polite" role="region" aria-label="Recommendation">
+            <div id="recommendation-panel" class="recommendation-panel hidden" tabindex="-1" aria-live="polite" role="region" aria-label="Recommendation">
               <div class="popup-header">
                 <div class="popup-label" id="recommendation-label"></div>
                 <h2 class="popup-title" id="recommendation-title"></h2>
@@ -1650,8 +1648,10 @@
       document.body.style.overflow = '';
     };
     
-    modal.querySelector('.video-modal-close').addEventListener('click', closeModal);
-    modal.querySelector('.video-modal-backdrop').addEventListener('click', closeModal);
+    const closeBtn = modal.querySelector('.video-modal-close');
+    const backdrop = modal.querySelector('.video-modal-backdrop');
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (backdrop) backdrop.addEventListener('click', closeModal);
     
     // ESC key to close
     const handleEsc = (e) => {
@@ -1662,23 +1662,17 @@
     };
     document.addEventListener('keydown', handleEsc);
     
-    // Focus management
-    modal.querySelector('.video-modal-close').focus();
+    if (closeBtn) closeBtn.focus();
   }
 
-  // Contact form - Netlify Forms
+  // Contact form - Netlify Forms (submission always proceeds; UI updates only when elements exist)
   async function handleSubmit(event){
     event.preventDefault();
     const form = event.target;
     const submitBtn = document.getElementById('submit-btn');
     const note = document.getElementById('form-note');
-    
-    // Disable submit button and show loading state
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending...';
-    note.textContent = '';
-    note.className = 'note';
-    
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending...'; }
+    if (note) { note.textContent = ''; note.className = 'note'; }
     try {
       const formData = new FormData(form);
       const response = await fetch('/', {
@@ -1686,60 +1680,98 @@
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(formData).toString()
       });
-      
       if (response.ok) {
-        note.textContent = 'Thanks! Your message has been sent. We\'ll get back to you within 24 hours.';
-        note.className = 'note form-success';
+        if (note) { note.textContent = 'Thanks! Your message has been sent. We\'ll get back to you within 24 hours.'; note.className = 'note form-success'; }
         form.reset();
       } else {
         throw new Error('Form submission failed');
       }
     } catch (error) {
-      note.textContent = 'Sorry, there was an error sending your message. Please try emailing us directly or contact us on LinkedIn.';
-      note.className = 'note form-error';
+      if (note) note.textContent = 'Sorry, there was an error sending your message. Please try emailing us directly or contact us on LinkedIn.';
+      if (note) note.className = 'note form-error';
     } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Send message';
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send message'; }
     }
-    
     return false;
   }
 
-  document.getElementById('year').textContent = new Date().getFullYear();
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
   
   // Header scroll effect
   let lastScroll = 0;
   const header = document.querySelector('header');
   window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
-    if (currentScroll > 20) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
+    if (header) {
+      if (currentScroll > 20) header.classList.add('scrolled');
+      else header.classList.remove('scrolled');
     }
     lastScroll = currentScroll;
   });
 
-  // Sector cards functionality
+  // Hero / form: resolve elements with fallbacks (preserves behaviour if IDs/classes change)
+  const $ = (selectors) => (Array.isArray(selectors) ? selectors.map(s => document.querySelector(s)).find(Boolean) : document.querySelector(selectors)) || null;
+  const warnMissing = (name, el, selectors) => { if (!el) console.warn('[Hero] Expected element missing:', name, '— tried:', selectors); };
+
   const sectorCards = document.querySelectorAll('.sector-card');
-  const sectorInstruction = document.getElementById('sector-instruction');
-  const objectiveStep = document.getElementById('objective-step');
-  const objectiveInstruction = document.getElementById('objective-instruction');
-  const objectiveSelect = document.getElementById('objective-select');
-  const resultsArea = document.getElementById('results-area');
-  const resultsTitle = document.getElementById('results-title');
-  const resultsText = document.getElementById('results-text');
-  
+  const sectorInstruction = $('#sector-instruction') || $('.hero-instruction');
+  const objectiveStep = $('#objective-step') || $('.objective-step');
+  const objectiveInstruction = $('#objective-instruction') || $('.objective-instruction');
+  const objectiveSelect = $('#objective-select') || $('.objective-step select') || $('select[name="objective"]');
+  const resultsArea = $('#results-area') || $('.results-container');
+  const resultsTitle = $('#results-title');
+  const resultsText = $('#results-text');
+  const recommendationPanel = $('#recommendation-panel') || $('.recommendation-panel');
+  const recommendationLabel = $('#recommendation-label');
+  const recommendationTitle = $('#recommendation-title');
+  const recommendationText = $('#recommendation-text');
+
+  if (!sectorCards.length) warnMissing('sector buttons', null, ['#sector-cards', '.sector-cards-grid', '.sector-card']);
+  warnMissing('sector instruction', sectorInstruction, ['#sector-instruction', '.hero-instruction']);
+  warnMissing('objective step container', objectiveStep, ['#objective-step', '.objective-step']);
+  warnMissing('objective dropdown', objectiveSelect, ['#objective-select', '.objective-step select']);
+  warnMissing('recommendation panel', recommendationPanel, ['#recommendation-panel', '.recommendation-panel']);
+
   let selectedSector = null;
+
+  function scrollToGoalDropdown() {
+    const select = objectiveSelect;
+    const container = objectiveStep;
+    if (!select || !container) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const scrollBehavior = prefersReducedMotion ? 'auto' : 'smooth';
+    const rect = container.getBoundingClientRect();
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+    const y = isDesktop
+      ? rect.top + window.pageYOffset - (window.innerHeight / 2) + (rect.height / 2)
+      : rect.top + window.pageYOffset - 90;
+    window.scrollTo({ top: y, behavior: scrollBehavior });
+
+    setTimeout(() => {
+      select.focus({ preventScroll: true });
+    }, prefersReducedMotion ? 50 : 300);
+  }
+
+  function scrollToRecommendationPanel() {
+    const panel = recommendationPanel;
+    if (!panel) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const scrollBehavior = prefersReducedMotion ? 'auto' : 'smooth';
+    const headerOffset = 90;
+    const rect = panel.getBoundingClientRect();
+    const y = rect.top + window.pageYOffset - headerOffset;
+    window.scrollTo({ top: y, behavior: scrollBehavior });
+  }
   
-  // Show sector instruction on load
-  setTimeout(() => {
-    sectorInstruction.classList.add('visible');
-  }, 300);
+  if (sectorInstruction) setTimeout(() => sectorInstruction.classList.add('visible'), 300);
   
-  // Handle sector card selection
+  // Handle sector card selection (require dropdown container + select to reveal next step)
   sectorCards.forEach(card => {
     card.addEventListener('click', () => {
+      if (!objectiveStep || !objectiveSelect) return; // cannot show dropdown without both
       // Remove selected class from all cards
       sectorCards.forEach(c => c.classList.remove('selected'));
       // Add selected class to clicked card
@@ -1747,9 +1779,9 @@
       selectedSector = card.dataset.sector;
       
       // Clear results and recommendation panel
-      resultsArea.style.display = 'none';
-      resultsTitle.textContent = '';
-      resultsText.innerHTML = '';
+      if (resultsArea) resultsArea.style.display = 'none';
+      if (resultsTitle) resultsTitle.textContent = '';
+      if (resultsText) resultsText.innerHTML = '';
       if (recommendationPanel) {
         recommendationPanel.classList.remove('visible');
         setTimeout(() => {
@@ -1759,10 +1791,10 @@
       
       // Show objective step and populate options
       objectiveStep.classList.add('active');
-      objectiveInstruction.style.display = 'block';
-      setTimeout(() => {
-        objectiveInstruction.classList.add('visible');
-      }, 50);
+      if (objectiveInstruction) {
+        objectiveInstruction.style.display = 'block';
+        setTimeout(() => objectiveInstruction.classList.add('visible'), 50);
+      }
       
       objectiveSelect.innerHTML = '<option value="">Choose...</option>';
       
@@ -1778,6 +1810,12 @@
       objectiveSelect.disabled = false;
       objectiveSelect.setAttribute('aria-disabled', 'false');
       objectiveSelect.value = '';
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setTimeout(() => scrollToGoalDropdown(), 100);
+        });
+      });
     });
   });
 
@@ -1935,12 +1973,6 @@
   };
 
 
-  // Recommendation panel elements
-  const recommendationPanel = document.getElementById('recommendation-panel');
-  const recommendationLabel = document.getElementById('recommendation-label');
-  const recommendationTitle = document.getElementById('recommendation-title');
-  const recommendationText = document.getElementById('recommendation-text');
-  
   // Recommendation content mapping (simplified, consultative text)
   const RECOMMENDATION_MAP = {
     'higher-education': {
@@ -2055,52 +2087,45 @@
     }
   };
   
-  // Handle objective selection - show recommendation panel
-  objectiveSelect.addEventListener('change', (e) => {
-    const selectedObjective = e.target.value;
-    
-    if (selectedObjective && selectedSector) {
-      const recommendation = RECOMMENDATION_MAP[selectedSector] && RECOMMENDATION_MAP[selectedSector][selectedObjective];
-      
-      if (recommendation) {
-        // Populate recommendation panel: split "You want to: Topic" into label + title
-        const fullTitle = recommendation.title || '';
-        const colonIndex = fullTitle.indexOf(': ');
-        if (colonIndex !== -1) {
-          recommendationLabel.textContent = fullTitle.slice(0, colonIndex).trim();
-          recommendationTitle.textContent = fullTitle.slice(colonIndex + 2).trim();
-          recommendationLabel.style.display = '';
-        } else {
-          recommendationLabel.textContent = '';
-          recommendationLabel.style.display = 'none';
-          recommendationTitle.textContent = fullTitle;
+  // Handle objective selection - show recommendation panel (attach whenever dropdown exists)
+  if (objectiveSelect) {
+    objectiveSelect.addEventListener('change', (e) => {
+      const selectedObjective = e.target.value;
+      if (selectedObjective && selectedSector) {
+        const recommendation = RECOMMENDATION_MAP[selectedSector] && RECOMMENDATION_MAP[selectedSector][selectedObjective];
+        if (recommendation) {
+          const fullTitle = recommendation.title || '';
+          const colonIndex = fullTitle.indexOf(': ');
+          if (recommendationLabel) {
+            if (colonIndex !== -1) {
+              recommendationLabel.textContent = fullTitle.slice(0, colonIndex).trim();
+              recommendationLabel.style.display = '';
+            } else {
+              recommendationLabel.textContent = '';
+              recommendationLabel.style.display = 'none';
+            }
+          }
+          if (recommendationTitle) recommendationTitle.textContent = colonIndex !== -1 ? fullTitle.slice(colonIndex + 2).trim() : fullTitle;
+          if (recommendationText) recommendationText.innerHTML = recommendation.text;
+          if (recommendationPanel) {
+            recommendationPanel.classList.remove('hidden');
+            setTimeout(() => {
+              recommendationPanel.classList.add('visible');
+              recommendationPanel.focus({ preventScroll: true });
+              requestAnimationFrame(() => { setTimeout(() => scrollToRecommendationPanel(), 150); });
+            }, 10);
+          }
+          if (resultsArea) resultsArea.style.display = 'none';
+        } else if (recommendationPanel) {
+          recommendationPanel.classList.remove('visible');
+          setTimeout(() => recommendationPanel.classList.add('hidden'), 250);
         }
-        recommendationText.innerHTML = recommendation.text;
-        
-        // Show panel with animation
-        recommendationPanel.classList.remove('hidden');
-        // Trigger animation
-        setTimeout(() => {
-          recommendationPanel.classList.add('visible');
-        }, 10);
-        
-        // Hide old results area if it exists
-        resultsArea.style.display = 'none';
-      } else {
-        // Hide panel if no recommendation found
+      } else if (recommendationPanel) {
         recommendationPanel.classList.remove('visible');
-        setTimeout(() => {
-          recommendationPanel.classList.add('hidden');
-        }, 250);
+        setTimeout(() => recommendationPanel.classList.add('hidden'), 250);
       }
-    } else {
-      // Hide panel if no selection (user cleared dropdown)
-      recommendationPanel.classList.remove('visible');
-      setTimeout(() => {
-        recommendationPanel.classList.add('hidden');
-      }, 250);
-    }
-  });
+    });
+  }
 
   // Scroll animations
   const observerOptions = {
